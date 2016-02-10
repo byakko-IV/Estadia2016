@@ -13,13 +13,13 @@ import com.cede.lib.GuiDisplayer;
  *
  * @author MHERNANDEZ
  */
-public class Facturas extends javax.swing.JFrame {
+public class Requisiciones extends javax.swing.JFrame {
     private ImageIcon icon;
     private GuiDisplayer g;
     /**
      * Creates new form Main
      */
-    public Facturas() {
+    public Requisiciones() {
         initComponents();
         icon = new ImageIcon(getClass().getResource("/com/cede/img/header-logo.png"));        
         logoLabel.setIcon(icon);
@@ -78,7 +78,7 @@ public class Facturas extends javax.swing.JFrame {
         jMenu4 = new javax.swing.JMenu();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setTitle("Facturas");
+        setTitle("Requisiciones");
         setBackground(new java.awt.Color(255, 255, 255));
         setExtendedState(6);
 
@@ -139,24 +139,19 @@ public class Facturas extends javax.swing.JFrame {
         jButton4.setPreferredSize(new java.awt.Dimension(100, 100));
         jButton4.setVerticalAlignment(javax.swing.SwingConstants.BOTTOM);
         jButton4.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        jButton4.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton4ActionPerformed(evt);
-            }
-        });
         jToolBar1.add(jButton4);
 
         jPanel3.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        jLabel1.setText("RFC");
+        jLabel1.setText("Fecha");
 
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        jLabel2.setText("Nombre");
+        jLabel2.setText("Zona");
 
-        jLabel3.setText("Domicilio");
+        jLabel3.setText("Region");
 
-        jLabel5.setText("Teléfono");
+        jLabel5.setText("Total");
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -262,7 +257,7 @@ public class Facturas extends javax.swing.JFrame {
 
         jLabel4.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel4.setText("Productos");
+        jLabel4.setText("Requisicioes");
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
@@ -335,7 +330,7 @@ public class Facturas extends javax.swing.JFrame {
 
         jLabel8.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel8.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel8.setText("Lista de facturas");
+        jLabel8.setText("Lista de requisiciones");
 
         jLabel9.setText("Generar reporte por:");
 
@@ -432,7 +427,9 @@ public class Facturas extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        /*Here there is nothing to do*/
+        /*Here is de code to perform when de factura´s button is clicked*/
+        g.ChargeFacturas();
+        this.dispose();
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
@@ -440,12 +437,6 @@ public class Facturas extends javax.swing.JFrame {
         g.ChargeProveedores();
         this.dispose();
     }//GEN-LAST:event_jButton2ActionPerformed
-
-    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-        /*Here is the code to ´perform when requisicione´s butto is clicked*/
-        g.ChargeRequisiciones();
-        this.dispose();
-    }//GEN-LAST:event_jButton4ActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
