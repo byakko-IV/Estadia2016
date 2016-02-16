@@ -11,7 +11,7 @@ public class MyConnection {
     
     
     public MyConnection(){
-        route = "C:/Users/MHERNANDEZ/Documents/sqlite/estadia.db";
+        route = "src/com/cede/db/estadia.db";
     }
     
     public void connect(){
@@ -23,9 +23,4 @@ public class MyConnection {
             ex.printStackTrace();
         }
     }
-    
-    public static void main(String arg[]){
-        MyConnection c = new MyConnection();
-    }
-    
 }

@@ -72,7 +72,6 @@ public class DBManager extends MyConnection{
             result = getQuery(sql);
             if(result != null){
                 int columnNumber = result.getMetaData().getColumnCount();
-                System.out.println(columnNumber);
                 for(int i = 1; i < columnNumber; i++){
                     tableModel.addColumn(result.getMetaData().getColumnName(i));
                 }
