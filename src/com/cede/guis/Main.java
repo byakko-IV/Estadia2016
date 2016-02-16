@@ -5,9 +5,11 @@
  */
 package com.cede.guis;
 
+import com.cede.lib.DBManager;
 import java.awt.Toolkit;
 import javax.swing.ImageIcon;
 import com.cede.lib.GuiDisplayer;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -16,6 +18,7 @@ import com.cede.lib.GuiDisplayer;
 public class Main extends javax.swing.JFrame {
     private ImageIcon icon;
     private GuiDisplayer g;
+    DBManager dbm;
     /**
      * Creates new form Main
      */
@@ -25,6 +28,8 @@ public class Main extends javax.swing.JFrame {
         logoLabel.setIcon(icon);
          setIconImage(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("/com/cede/img/icono.png")));
         g = new GuiDisplayer();
+        dbm = new DBManager();
+        dbm.ProductsTotal((DefaultTableModel)ProductsTable.getModel());
     }
 
     /**
@@ -60,7 +65,7 @@ public class Main extends javax.swing.JFrame {
         jPanel1 = new javax.swing.JPanel();
         jPanel4 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        ProductsTable = new javax.swing.JTable();
         jButton8 = new javax.swing.JButton();
         jButton9 = new javax.swing.JButton();
         jButton10 = new javax.swing.JButton();
@@ -255,18 +260,15 @@ public class Main extends javax.swing.JFrame {
 
         jPanel4.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        ProductsTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+
             }
         ));
-        jScrollPane1.setViewportView(jTable1);
+        jScrollPane1.setViewportView(ProductsTable);
 
         jButton8.setText("Detalle");
 
@@ -413,6 +415,7 @@ public class Main extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuItem MenuSalir;
+    private javax.swing.JTable ProductsTable;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton10;
     private javax.swing.JButton jButton11;
@@ -441,7 +444,6 @@ public class Main extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
     private javax.swing.JTextField jTextField1;
     private javax.swing.JTextField jTextField2;
     private javax.swing.JTextField jTextField3;
