@@ -9,6 +9,8 @@ import com.cede.lib.DBManager;
 import java.awt.Toolkit;
 import javax.swing.ImageIcon;
 import com.cede.lib.GuiDisplayer;
+import com.cede.models.Product;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -30,6 +32,39 @@ public class Main extends javax.swing.JFrame {
         g = new GuiDisplayer();
         dbm = new DBManager();
         dbm.ProductsTotal((DefaultTableModel)ProductsTable.getModel());
+        //System.out.println("total: "+dbm.getProductTotalMoney());
+        this.cleanFields();
+        this.disableFields();
+        TotalLabel.setText("Total: " + dbm.getProductTotalMoney());
+    }
+    
+    private void cleanFields(){
+        descripcionField.setText("");
+        cantidadField.setText("");
+        precioField.setText("");
+    }
+    
+    private void disableFields(){
+        descripcionField.disable();
+        presentacionCombo.disable();
+        cantidadField.disable();
+        precioField.disable();
+        proveedorCombo.disable();
+        Cancelbtn.setEnabled(false);
+        Guardarbtn.setEnabled(false);
+        Nuevobtn.setEnabled(true);
+    }
+    
+    private void enableFields(){
+        descripcionField.enable();
+        descripcionField.requestFocus();
+        presentacionCombo.enable();
+        cantidadField.enable();
+        precioField.enable();
+        proveedorCombo.enable();
+        Cancelbtn.setEnabled(true);
+        Guardarbtn.setEnabled(true);
+        Nuevobtn.setEnabled(false);
     }
 
     /**
@@ -45,18 +80,18 @@ public class Main extends javax.swing.JFrame {
         logoLabel = new javax.swing.JLabel();
         jPanel3 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
+        descripcionField = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
-        jTextField2 = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
-        jTextField3 = new javax.swing.JTextField();
+        cantidadField = new javax.swing.JTextField();
         jLabel4 = new javax.swing.JLabel();
-        jTextField4 = new javax.swing.JTextField();
+        precioField = new javax.swing.JTextField();
         jLabel5 = new javax.swing.JLabel();
-        jComboBox1 = new javax.swing.JComboBox();
-        jButton5 = new javax.swing.JButton();
-        jButton6 = new javax.swing.JButton();
-        jButton7 = new javax.swing.JButton();
+        proveedorCombo = new javax.swing.JComboBox();
+        presentacionCombo = new javax.swing.JComboBox();
+        Nuevobtn = new javax.swing.JButton();
+        Cancelbtn = new javax.swing.JButton();
+        Guardarbtn = new javax.swing.JButton();
         jToolBar1 = new javax.swing.JToolBar();
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
@@ -67,9 +102,9 @@ public class Main extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         ProductsTable = new javax.swing.JTable();
         jButton8 = new javax.swing.JButton();
-        jButton9 = new javax.swing.JButton();
-        jButton10 = new javax.swing.JButton();
-        jLabel6 = new javax.swing.JLabel();
+        Editarbtn = new javax.swing.JButton();
+        Eliminarbtn = new javax.swing.JButton();
+        TotalLabel = new javax.swing.JLabel();
         jComboBox2 = new javax.swing.JComboBox();
         jTextField5 = new javax.swing.JTextField();
         jButton11 = new javax.swing.JButton();
@@ -100,7 +135,9 @@ public class Main extends javax.swing.JFrame {
 
         jLabel5.setText("Proveedor");
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        proveedorCombo.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "1", "2", "3", "4" }));
+
+        presentacionCombo.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Pieza", "Caja", "Paquete" }));
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -116,20 +153,20 @@ public class Main extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel3Layout.createSequentialGroup()
-                                .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(cantidadField, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(jLabel4)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jTextField4))
-                            .addComponent(jComboBox1, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                                .addComponent(precioField))
+                            .addComponent(proveedorCombo, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                             .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, 80, Short.MAX_VALUE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jTextField1)
-                            .addComponent(jTextField2))))
+                            .addComponent(descripcionField)
+                            .addComponent(presentacionCombo, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                 .addContainerGap())
         );
         jPanel3Layout.setVerticalGroup(
@@ -138,29 +175,45 @@ public class Main extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(descripcionField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jLabel2)
-                    .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(presentacionCombo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
-                    .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(cantidadField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel4)
-                    .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(precioField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel5)
-                    .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(proveedorCombo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(31, Short.MAX_VALUE))
         );
 
-        jButton5.setText("Nuevo");
+        Nuevobtn.setText("Nuevo");
+        Nuevobtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                NuevobtnActionPerformed(evt);
+            }
+        });
 
-        jButton6.setText("Cancelar");
+        Cancelbtn.setText("Cancelar");
+        Cancelbtn.setPreferredSize(new java.awt.Dimension(80, 23));
+        Cancelbtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                CancelbtnActionPerformed(evt);
+            }
+        });
 
-        jButton7.setText("Guardar");
+        Guardarbtn.setText("Guardar");
+        Guardarbtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                GuardarbtnActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -171,11 +224,11 @@ public class Main extends javax.swing.JFrame {
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addComponent(jButton5, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(Nuevobtn, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
-                        .addComponent(jButton6, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 17, Short.MAX_VALUE)
-                        .addComponent(jButton7, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(Cancelbtn, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(Guardarbtn, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(logoLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
@@ -188,9 +241,9 @@ public class Main extends javax.swing.JFrame {
                 .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton5)
-                    .addComponent(jButton6)
-                    .addComponent(jButton7))
+                    .addComponent(Nuevobtn)
+                    .addComponent(Cancelbtn, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(Guardarbtn))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -272,13 +325,23 @@ public class Main extends javax.swing.JFrame {
 
         jButton8.setText("Detalle");
 
-        jButton9.setText("Editar");
+        Editarbtn.setText("Editar");
+        Editarbtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                EditarbtnActionPerformed(evt);
+            }
+        });
 
-        jButton10.setText("Eliminar");
+        Eliminarbtn.setText("Eliminar");
+        Eliminarbtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                EliminarbtnActionPerformed(evt);
+            }
+        });
 
-        jLabel6.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        jLabel6.setText("Total:");
-        jLabel6.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
+        TotalLabel.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        TotalLabel.setText("Total:");
+        TotalLabel.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
 
         jComboBox2.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
@@ -294,11 +357,11 @@ public class Main extends javax.swing.JFrame {
                     .addGroup(jPanel4Layout.createSequentialGroup()
                         .addComponent(jButton8, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
-                        .addComponent(jButton9, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(Editarbtn, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
-                        .addComponent(jButton10, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(Eliminarbtn, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(TotalLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel4Layout.createSequentialGroup()
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -320,9 +383,9 @@ public class Main extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton8)
-                    .addComponent(jButton9)
-                    .addComponent(jButton10)
-                    .addComponent(jLabel6))
+                    .addComponent(Editarbtn)
+                    .addComponent(Eliminarbtn)
+                    .addComponent(TotalLabel))
                 .addContainerGap())
         );
 
@@ -413,28 +476,92 @@ public class Main extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_jButton4ActionPerformed
 
+    private void GuardarbtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_GuardarbtnActionPerformed
+        /*Here is the code to perform when guardar button is clicked*/
+        try{
+            Product p = new Product("" + (dbm.getProductId()+ 1), descripcionField.getText(),
+                                  presentacionCombo.getSelectedItem().toString(), Integer.parseInt(cantidadField.getText()), 
+                                  Float.parseFloat(precioField.getText()), proveedorCombo.getSelectedItem().toString());
+            dbm.storeProduct(p);
+            this.cleanFields();
+            this.disableFields();
+            dbm.ProductsTotal((DefaultTableModel)ProductsTable.getModel());
+            TotalLabel.setText("Total: " + dbm.getProductTotalMoney());
+        }catch(Exception ex){
+            JOptionPane.showMessageDialog(null,"Error:"+ex.getMessage()+"\nVerifique");
+        }
+    }//GEN-LAST:event_GuardarbtnActionPerformed
+
+    private void NuevobtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_NuevobtnActionPerformed
+        //*Here is the code to perform when the nuevo button is clicked*/
+        this.cleanFields();
+        this.enableFields();
+    }//GEN-LAST:event_NuevobtnActionPerformed
+
+    private void CancelbtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CancelbtnActionPerformed
+        /*Here is the code to perform when the cancelar button is clicked*/
+        this.cleanFields();
+        this.disableFields();
+    }//GEN-LAST:event_CancelbtnActionPerformed
+
+    private void EditarbtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_EditarbtnActionPerformed
+        /*Here is the code to perform when the editar button is clicked*/
+        //System.out.println(ProductsTable.getSelectedRow());
+         try{
+            Product p = new Product(ProductsTable.getValueAt(ProductsTable.getSelectedRow(), 0).toString(),
+                                ProductsTable.getValueAt(ProductsTable.getSelectedRow(), 1).toString(),
+                                ProductsTable.getValueAt(ProductsTable.getSelectedRow(), 2).toString(),
+                                Integer.parseInt(ProductsTable.getValueAt(ProductsTable.getSelectedRow(), 3).toString()),
+                                Float.parseFloat(ProductsTable.getValueAt(ProductsTable.getSelectedRow(), 4).toString()),
+                                ProductsTable.getValueAt(ProductsTable.getSelectedRow(), 5).toString());
+            dbm.updateProduct(p);
+            dbm.ProductsTotal((DefaultTableModel)ProductsTable.getModel());
+            TotalLabel.setText("Total: " + dbm.getProductTotalMoney());
+        }catch(Exception ex){
+            JOptionPane.showMessageDialog(null,"Error:"+ex.getMessage()+"\nVerifique");
+        }
+    }//GEN-LAST:event_EditarbtnActionPerformed
+
+    private void EliminarbtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_EliminarbtnActionPerformed
+        /*Here is the code to perform when the eliminar button is clicked*/
+        try{
+            Product p = new Product(ProductsTable.getValueAt(ProductsTable.getSelectedRow(), 0).toString(),
+                                ProductsTable.getValueAt(ProductsTable.getSelectedRow(), 1).toString(),
+                                ProductsTable.getValueAt(ProductsTable.getSelectedRow(), 2).toString(),
+                                Integer.parseInt(ProductsTable.getValueAt(ProductsTable.getSelectedRow(), 3).toString()),
+                                Float.parseFloat(ProductsTable.getValueAt(ProductsTable.getSelectedRow(), 4).toString()),
+                                ProductsTable.getValueAt(ProductsTable.getSelectedRow(), 5).toString());
+            dbm.productDelete(p);
+            dbm.ProductsTotal((DefaultTableModel)ProductsTable.getModel());
+            TotalLabel.setText("Total: " + dbm.getProductTotalMoney());
+        }catch(Exception ex){
+            JOptionPane.showMessageDialog(null,"Error:"+ex.getMessage()+"\nVerifique");
+        }
+    }//GEN-LAST:event_EliminarbtnActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton Cancelbtn;
+    private javax.swing.JButton Editarbtn;
+    private javax.swing.JButton Eliminarbtn;
+    private javax.swing.JButton Guardarbtn;
     private javax.swing.JMenuItem MenuSalir;
+    private javax.swing.JButton Nuevobtn;
     private javax.swing.JTable ProductsTable;
+    private javax.swing.JLabel TotalLabel;
+    private javax.swing.JTextField cantidadField;
+    private javax.swing.JTextField descripcionField;
     private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton10;
     private javax.swing.JButton jButton11;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
-    private javax.swing.JButton jButton5;
-    private javax.swing.JButton jButton6;
-    private javax.swing.JButton jButton7;
     private javax.swing.JButton jButton8;
-    private javax.swing.JButton jButton9;
-    private javax.swing.JComboBox jComboBox1;
     private javax.swing.JComboBox jComboBox2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
-    private javax.swing.JLabel jLabel6;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenu jMenu4;
@@ -444,12 +571,11 @@ public class Main extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
-    private javax.swing.JTextField jTextField3;
-    private javax.swing.JTextField jTextField4;
     private javax.swing.JTextField jTextField5;
     private javax.swing.JToolBar jToolBar1;
     private javax.swing.JLabel logoLabel;
+    private javax.swing.JTextField precioField;
+    private javax.swing.JComboBox presentacionCombo;
+    private javax.swing.JComboBox proveedorCombo;
     // End of variables declaration//GEN-END:variables
 }

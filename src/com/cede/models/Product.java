@@ -2,13 +2,15 @@ package com.cede.models;
 
 public class Product {
     private String id_producto;
+    private String presentacion;
     private String descripcion;
-    private String cantidad;
-    private String precio;
+    private int cantidad;
+    private float precio;
     private String proveedor;
     
-    public Product(String id_producto, String descripcion, String cantidad, String precio, String proveedor){
+    public Product(String id_producto, String descripcion, String presentacion, int cantidad, float precio, String proveedor){
         this.id_producto = id_producto;
+        this.presentacion = presentacion;
         this.descripcion = descripcion;
         this.cantidad = cantidad;
         this.precio = precio;
@@ -31,19 +33,26 @@ public class Product {
         this.descripcion = descripcion;
     }
     
-    public String getProductCuantity(){
+    public String getProductPresentation(){
+        return this.presentacion;
+    }
+    
+    public void setProductPresentation(String presentacion){
+        this.presentacion = presentacion;
+    }
+    public int getProductCuantity(){
         return this.cantidad;
     }
     
-    public void setProductCuantity(String cantidad){
+    public void setProductCuantity(int cantidad){
         this.cantidad = cantidad;
     }
     
-    public String getProductPrice(){
+    public float getProductPrice(){
         return this.precio;
     }
     
-    public void setProductPrice(String precio){
+    public void setProductPrice(float precio){
         this.precio = precio;
     }
     
