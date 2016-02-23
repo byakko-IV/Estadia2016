@@ -6,9 +6,9 @@ public class Product {
     private String descripcion;
     private int cantidad;
     private float precio;
-    private String proveedor;
+    private int proveedor;
     
-    public Product(String id_producto, String descripcion, String presentacion, int cantidad, float precio, String proveedor){
+    public Product(String id_producto, String descripcion, String presentacion, int cantidad, float precio, int proveedor){
         this.id_producto = id_producto;
         this.presentacion = presentacion;
         this.descripcion = descripcion;
@@ -56,11 +56,11 @@ public class Product {
         this.precio = precio;
     }
     
-    public String getProductProvider(){
+    public int getProductProvider(){
         return this.proveedor;
     }
     
-    public void setProductProvider(String proveedor){
+    public void setProductProvider(int proveedor){
         this.proveedor = proveedor;
     }
 }

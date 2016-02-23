@@ -5,11 +5,15 @@
  */
 package com.cede.guis;
 
-import com.cede.lib.DBManager;
 import java.awt.Toolkit;
 import javax.swing.ImageIcon;
 import com.cede.lib.GuiDisplayer;
+import com.cede.lib.ProductModel;
+import com.cede.lib.ProviderModel;
 import com.cede.models.Product;
+import com.cede.models.Provider;
+import java.awt.event.KeyEvent;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
@@ -20,22 +24,32 @@ import javax.swing.table.DefaultTableModel;
 public class Main extends javax.swing.JFrame {
     private ImageIcon icon;
     private GuiDisplayer g;
-    DBManager dbm;
+    ProductModel pm;
+    ProviderModel pvm;
     /**
      * Creates new form Main
      */
     public Main() {
         initComponents();
+        //Setting up the window logo
         icon = new ImageIcon(getClass().getResource("/com/cede/img/header-logo.png"));        
         logoLabel.setIcon(icon);
          setIconImage(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("/com/cede/img/icono.png")));
+         
+         //initializing the objects
         g = new GuiDisplayer();
-        dbm = new DBManager();
-        dbm.ProductsTotal((DefaultTableModel)ProductsTable.getModel());
+        pm = new ProductModel();
+        pvm = new ProviderModel();
+        
+        pm.ProductsTotal((DefaultTableModel)ProductsTable.getModel());
+        DefaultComboBoxModel dcm = new DefaultComboBoxModel(pvm.ProvidersList());
         //System.out.println("total: "+dbm.getProductTotalMoney());
+        
+        //Setting up the gui
         this.cleanFields();
         this.disableFields();
-        TotalLabel.setText("Total: " + dbm.getProductTotalMoney());
+        TotalLabel.setText("Total: " + pm.getProductTotalMoney());
+        this.proveedorCombo.setModel(dcm);
     }
     
     private void cleanFields(){
@@ -105,9 +119,8 @@ public class Main extends javax.swing.JFrame {
         Editarbtn = new javax.swing.JButton();
         Eliminarbtn = new javax.swing.JButton();
         TotalLabel = new javax.swing.JLabel();
-        jComboBox2 = new javax.swing.JComboBox();
-        jTextField5 = new javax.swing.JTextField();
-        jButton11 = new javax.swing.JButton();
+        buscarField = new javax.swing.JTextField();
+        btnBuscar = new javax.swing.JButton();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         MenuSalir = new javax.swing.JMenuItem();
@@ -343,9 +356,18 @@ public class Main extends javax.swing.JFrame {
         TotalLabel.setText("Total:");
         TotalLabel.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
 
-        jComboBox2.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        buscarField.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                buscarFieldKeyPressed(evt);
+            }
+        });
 
-        jButton11.setText("Buscar");
+        btnBuscar.setText("Buscar");
+        btnBuscar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnBuscarActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
@@ -364,20 +386,17 @@ public class Main extends javax.swing.JFrame {
                         .addComponent(TotalLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel4Layout.createSequentialGroup()
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(buscarField, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jButton11, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(btnBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel4Layout.createSequentialGroup()
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton11))
+                    .addComponent(buscarField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnBuscar))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 429, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -478,15 +497,16 @@ public class Main extends javax.swing.JFrame {
 
     private void GuardarbtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_GuardarbtnActionPerformed
         /*Here is the code to perform when guardar button is clicked*/
+        Provider proveedor = (Provider) proveedorCombo.getSelectedItem();
         try{
-            Product p = new Product("" + (dbm.getProductId()+ 1), descripcionField.getText(),
+            Product p = new Product("" + (pm.getProductId()+ 1), descripcionField.getText(),
                                   presentacionCombo.getSelectedItem().toString(), Integer.parseInt(cantidadField.getText()), 
-                                  Float.parseFloat(precioField.getText()), proveedorCombo.getSelectedItem().toString());
-            dbm.storeProduct(p);
+                                  Float.parseFloat(precioField.getText()), proveedor.getIdProvider());
+            pm.storeProduct(p);
             this.cleanFields();
             this.disableFields();
-            dbm.ProductsTotal((DefaultTableModel)ProductsTable.getModel());
-            TotalLabel.setText("Total: " + dbm.getProductTotalMoney());
+            pm.ProductsTotal((DefaultTableModel)ProductsTable.getModel());
+            TotalLabel.setText("Total: " + pm.getProductTotalMoney());
         }catch(Exception ex){
             JOptionPane.showMessageDialog(null,"Error:"+ex.getMessage()+"\nVerifique");
         }
@@ -513,10 +533,10 @@ public class Main extends javax.swing.JFrame {
                                 ProductsTable.getValueAt(ProductsTable.getSelectedRow(), 2).toString(),
                                 Integer.parseInt(ProductsTable.getValueAt(ProductsTable.getSelectedRow(), 3).toString()),
                                 Float.parseFloat(ProductsTable.getValueAt(ProductsTable.getSelectedRow(), 4).toString()),
-                                ProductsTable.getValueAt(ProductsTable.getSelectedRow(), 5).toString());
-            dbm.updateProduct(p);
-            dbm.ProductsTotal((DefaultTableModel)ProductsTable.getModel());
-            TotalLabel.setText("Total: " + dbm.getProductTotalMoney());
+                                1);
+            pm.updateProduct(p);
+            pm.ProductsTotal((DefaultTableModel)ProductsTable.getModel());
+            TotalLabel.setText("Total: " + pm.getProductTotalMoney());
         }catch(Exception ex){
             JOptionPane.showMessageDialog(null,"Error:"+ex.getMessage()+"\nVerifique");
         }
@@ -530,14 +550,26 @@ public class Main extends javax.swing.JFrame {
                                 ProductsTable.getValueAt(ProductsTable.getSelectedRow(), 2).toString(),
                                 Integer.parseInt(ProductsTable.getValueAt(ProductsTable.getSelectedRow(), 3).toString()),
                                 Float.parseFloat(ProductsTable.getValueAt(ProductsTable.getSelectedRow(), 4).toString()),
-                                ProductsTable.getValueAt(ProductsTable.getSelectedRow(), 5).toString());
-            dbm.productDelete(p);
-            dbm.ProductsTotal((DefaultTableModel)ProductsTable.getModel());
-            TotalLabel.setText("Total: " + dbm.getProductTotalMoney());
+                                1);
+            pm.productDelete(p);
+            pm.ProductsTotal((DefaultTableModel)ProductsTable.getModel());
+            TotalLabel.setText("Total: " + pm.getProductTotalMoney());
         }catch(Exception ex){
             JOptionPane.showMessageDialog(null,"Error:"+ex.getMessage()+"\nVerifique");
         }
     }//GEN-LAST:event_EliminarbtnActionPerformed
+
+    private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
+        /*here is the code to perform when the buscar button is clicked*/
+        pm.ProductsSearch((DefaultTableModel)ProductsTable.getModel(), buscarField.getText());
+    }//GEN-LAST:event_btnBuscarActionPerformed
+
+    private void buscarFieldKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_buscarFieldKeyPressed
+        /*Here is the code to perform whe the BuscarField is on focus and the Enter key is pressed*/
+        if(evt.getKeyCode() == KeyEvent.VK_ENTER) {
+            pm.ProductsSearch((DefaultTableModel)ProductsTable.getModel(), buscarField.getText());
+         }
+    }//GEN-LAST:event_buscarFieldKeyPressed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton Cancelbtn;
@@ -548,15 +580,15 @@ public class Main extends javax.swing.JFrame {
     private javax.swing.JButton Nuevobtn;
     private javax.swing.JTable ProductsTable;
     private javax.swing.JLabel TotalLabel;
+    private javax.swing.JButton btnBuscar;
+    private javax.swing.JTextField buscarField;
     private javax.swing.JTextField cantidadField;
     private javax.swing.JTextField descripcionField;
     private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton11;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton8;
-    private javax.swing.JComboBox jComboBox2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -571,7 +603,6 @@ public class Main extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTextField jTextField5;
     private javax.swing.JToolBar jToolBar1;
     private javax.swing.JLabel logoLabel;
     private javax.swing.JTextField precioField;
