@@ -1,9 +1,8 @@
 package com.cede.lib;
 
-import com.cede.models.Product;
+
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import javax.swing.table.DefaultTableModel;
 
 public class DBManager extends MyConnection{
     

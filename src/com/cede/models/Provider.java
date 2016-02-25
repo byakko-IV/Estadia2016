@@ -55,6 +55,7 @@ public class Provider {
         this.telefono = telefono;
     }
     
+    @Override
     public String toString(){
         return this.nombre;
     }
