@@ -50,6 +50,8 @@ public class Main extends javax.swing.JFrame {
         this.disableFields();
         TotalLabel.setText("Total: " + pm.getProductTotalMoney());
         this.proveedorCombo.setModel(dcm);
+        
+        System.out.println(pm.getProductId());
     }
     
     private void cleanFields(){

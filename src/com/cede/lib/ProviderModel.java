@@ -1,24 +1,26 @@
 package com.cede.lib;
 
 import com.cede.models.Provider;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Vector;
 import javax.swing.table.DefaultTableModel;
 
 
-public class ProviderModel extends DBManager{
+public class ProviderModel extends MyConnection{
     
     //Retrieving all products from the data base
     public Vector<Provider> ProvidersList(){
-        
+        connect();
         Vector<Provider> pl = new Vector<Provider>();
         Provider provider;
         ResultSet result;
         String sql = "SELECT id_proveedor as id, rfc, nombre, domicilio, telefono FROM proveedores";
         
         try{
-            result = getQuery(sql);
+            PreparedStatement ps = connect.prepareStatement(sql);
+            result = ps.executeQuery();
             while(result.next()){
                 provider = new Provider(
                         result.getInt(1),
@@ -28,93 +30,108 @@ public class ProviderModel extends DBManager{
                         result.getString(5)
                 );
                 pl.add(provider);
-            }  
+            }
+            connect.close();
         }catch(SQLException ex){
             ex.printStackTrace();
-        }finally{
-            try{
-                query.close();
-                conn.close();
-            }catch(Exception ex){
-                ex.printStackTrace();
-            }
         }
         return pl;
     }
     
     //Storing a new provider into the data base
-    public void storeProvider(Provider provider){
-        String sql = "INSERT INTO proveedores VALUES("+
-                    provider.getIdProvider() + ", '" +
-                    provider.getRfc() + "', '" +
-                    provider.getNombre() +"', '" +
-                    provider.getDomicilio() + "', '" +
-                    provider.getTelefono() + "')";
-        //System.out.println(sql);
-        insert(sql);
-        
+    public int storeProvider(Provider provider){
+        int rowsAffected = 0;
+        connect();
+        String sql = "INSERT INTO proveedores VALUES(?, ?, ?, ?, ?)";
+        try{
+            PreparedStatement ps =  connect.prepareStatement(sql);
+            ps.setInt(1, provider.getIdProvider());
+            ps.setString(2, provider.getRfc());
+            ps.setString(3, provider.getNombre());
+            ps.setString(4, provider.getDomicilio());
+            ps.setString(5, provider.getTelefono());
+            
+            rowsAffected = ps.executeUpdate();
+            connect.close();
+        }catch(SQLException ex){
+            ex.printStackTrace();
+        }
+        return rowsAffected;
     }
     
      //Updating a existing product
-    public void updatePorvider(Provider provider){
-        String sql = "UPDATE proveedores SET "+
-                    "rfc = '" + provider.getRfc() + "'," + 
-                    "nombre = '" + provider.getNombre() +"', " +
-                    "domicilio = '" + provider.getDomicilio() + "', " +
-                    "telefono = '" + provider.getTelefono() + "' " +
-                    "WHERE id_proveedor = " + provider.getIdProvider();
-        System.out.println(sql);
-        insert(sql);
-        
+    public int updatePorvider(Provider provider){
+        int rowsAffected = 0;
+        connect();
+        String sql = "UPDATE proveedores SET rfc = ?, nombre = ?, domicilio = ?, telefono = ?" + 
+                    "WHERE id_proveedor = ? ";
+        try{
+            PreparedStatement ps = connect.prepareStatement(sql);
+            ps.setString(1, provider.getRfc());
+            ps.setString(2, provider.getNombre());
+            ps.setString(3, provider.getDomicilio());
+            ps.setString(4, provider.getTelefono());
+            ps.setInt(5, provider.getIdProvider());
+            
+            rowsAffected = ps.executeUpdate();
+            connect.close();
+        }catch(SQLException ex){
+            ex.printStackTrace();
+        }
+        return rowsAffected;
     }
     
     //Deleting a existing product from data base
-        public void providerDelete(Provider  provider){
-        String sql = "DELETE FROM proveedores WHERE id_proveedor = " + provider.getIdProvider();
-        delete(sql);
+    public int providerDelete(Provider  provider){
+        connect();
+        int rowsAffected = 0;
+        String sql = "DELETE FROM proveedores WHERE id_proveedor = ?";
+        
+        try{
+            PreparedStatement ps = connect.prepareStatement(sql);
+            ps.setInt(1, provider.getIdProvider());
+            rowsAffected = ps.executeUpdate();
+            connect.close();
+        }catch(SQLException ex){
+            ex.printStackTrace();
+        }
+        
+        return rowsAffected;
     }
     
      //Retriving the max value from id_proveedor on productos table 
     public int getProviderId(){
-        
+        connect();
         int id = 0;
         String sql = "SELECT MAX(id_proveedor) FROM proveedores";
         ResultSet result = null;
         
         try{
-            result = getQuery(sql);
+            PreparedStatement ps = connect.prepareStatement(sql);
+            result = ps.executeQuery();
             if(result != null){
                 while(result.next()){
                     id = result.getInt(1);
                 }
             }
+            connect.close();
         }catch(SQLException ex){
             ex.printStackTrace();
-        }finally{
-            try{
-                query.close();
-                conn.close();
-                if(result != null){
-                    result.close();
-                }
-            }catch(Exception ex){
-                ex.printStackTrace();
-            }
         }
-        
         return id;  
     }
     
     //Retrieving all products from the data base
     public void ProveedoresTotal(DefaultTableModel tableModel){
-        
+        connect();
         ResultSet result = null;
         tableModel.setRowCount(0);
         tableModel.setColumnCount(0);
         String sql = "SELECT id_proveedor as Id, rfc, nombre, domicilio, telefono FROM proveedores ORDER BY nombre";
         
         try{
-            result = getQuery(sql);
+            PreparedStatement ps = connect.prepareStatement(sql);
+            result = ps.executeQuery();
             if(result != null){
                 int columnNumber = result.getMetaData().getColumnCount();
                 for(int i = 1; i <= columnNumber; i++){
@@ -128,20 +145,40 @@ public class ProviderModel extends DBManager{
                     tableModel.addRow(obj);
                 }
             }
+            connect.close();
         }catch(SQLException ex){
             ex.printStackTrace();
-        }finally{
-            try{
-                query.close();
-                conn.close();
-                if(result != null){
-                    result.close();
-                }
-            }catch(Exception ex){
-                ex.printStackTrace();
-            }
         }
-        
     }
     
+    //Searching for a specific provider
+    public void SearchProvider(DefaultTableModel tableModel, String parameter, String value){
+        connect();
+        ResultSet result = null;
+        tableModel.setRowCount(0);
+        tableModel.setColumnCount(0);
+        String sql = "SELECT id_proveedor as Id, rfc, nombre, domicilio, telefono FROM proveedores WHERE "+ parameter +" LIKE ? ORDER BY nombre";
+        
+        try{
+            PreparedStatement ps = connect.prepareStatement(sql);
+            ps.setString(1, "%" +value+ "%");
+            result = ps.executeQuery();
+            if(result != null){
+                int columnNumber = result.getMetaData().getColumnCount();
+                for(int i = 1; i <= columnNumber; i++){
+                    tableModel.addColumn(result.getMetaData().getColumnName(i));
+                }
+                while(result.next()){
+                    Object []obj = new Object[columnNumber];
+                    for(int i = 1; i <= columnNumber; i++){
+                        obj[i-1] = result.getObject(i);
+                    }
+                    tableModel.addRow(obj);
+                }
+            }
+            connect.close();
+        }catch(SQLException ex){
+            ex.printStackTrace();
+        }
+    }
 }

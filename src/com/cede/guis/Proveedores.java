@@ -9,6 +9,7 @@ import com.cede.lib.GuiDisplayer;
 import com.cede.lib.ProviderModel;
 import com.cede.models.Provider;
 import java.awt.Toolkit;
+import java.awt.event.KeyEvent;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
@@ -93,8 +94,8 @@ public class Proveedores extends javax.swing.JFrame {
         jButton8 = new javax.swing.JButton();
         Editarbtn = new javax.swing.JButton();
         Eliminarbtn = new javax.swing.JButton();
-        jComboBox2 = new javax.swing.JComboBox();
-        jTextField5 = new javax.swing.JTextField();
+        ParametroCombo = new javax.swing.JComboBox();
+        searchProviderField = new javax.swing.JTextField();
         jButton11 = new javax.swing.JButton();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
@@ -316,9 +317,20 @@ public class Proveedores extends javax.swing.JFrame {
             }
         });
 
-        jComboBox2.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        ParametroCombo.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "nombre", "domicilio" }));
+
+        searchProviderField.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                searchProviderFieldKeyPressed(evt);
+            }
+        });
 
         jButton11.setText("Buscar");
+        jButton11.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton11ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
@@ -336,9 +348,9 @@ public class Proveedores extends javax.swing.JFrame {
                         .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(jPanel4Layout.createSequentialGroup()
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(ParametroCombo, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(searchProviderField, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jButton11, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
@@ -347,8 +359,8 @@ public class Proveedores extends javax.swing.JFrame {
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel4Layout.createSequentialGroup()
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(ParametroCombo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(searchProviderField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButton11))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 429, Short.MAX_VALUE)
@@ -505,6 +517,21 @@ public class Proveedores extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_EliminarbtnActionPerformed
 
+    private void jButton11ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton11ActionPerformed
+        /*Here is the code to perform when the search butto is clicked*/
+        pm.SearchProvider((DefaultTableModel)tablaProviders.getModel(), ParametroCombo.getSelectedItem().toString(), 
+                searchProviderField.getText());
+    }//GEN-LAST:event_jButton11ActionPerformed
+
+    private void searchProviderFieldKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_searchProviderFieldKeyPressed
+        /*Here is the code to perform when the search butto is clicked*/
+        System.out.print(ParametroCombo.getSelectedItem().toString());
+        if(evt.getKeyCode() == KeyEvent.VK_ENTER) {
+            pm.SearchProvider((DefaultTableModel)tablaProviders.getModel(), ParametroCombo.getSelectedItem().toString(), 
+                searchProviderField.getText());
+        }
+    }//GEN-LAST:event_searchProviderFieldKeyPressed
+
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -514,6 +541,7 @@ public class Proveedores extends javax.swing.JFrame {
     private javax.swing.JButton Guardarbtn;
     private javax.swing.JMenuItem MenuSalir;
     private javax.swing.JButton Nuevobtn;
+    private javax.swing.JComboBox ParametroCombo;
     private javax.swing.JTextField domicilioField;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton11;
@@ -521,7 +549,6 @@ public class Proveedores extends javax.swing.JFrame {
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton8;
-    private javax.swing.JComboBox jComboBox2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -535,11 +562,11 @@ public class Proveedores extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTextField jTextField5;
     private javax.swing.JToolBar jToolBar1;
     private javax.swing.JLabel logoLabel;
     private javax.swing.JTextField nombreField;
     private javax.swing.JTextField rfcField;
+    private javax.swing.JTextField searchProviderField;
     private javax.swing.JTable tablaProviders;
     private javax.swing.JTextField telefonoField;
     // End of variables declaration//GEN-END:variables
