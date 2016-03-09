@@ -157,7 +157,8 @@ public class ProviderModel extends MyConnection{
         ResultSet result = null;
         tableModel.setRowCount(0);
         tableModel.setColumnCount(0);
-        String sql = "SELECT id_proveedor as Id, rfc, nombre, domicilio, telefono FROM proveedores WHERE "+ parameter +" LIKE ? ORDER BY nombre";
+        String sql = "SELECT id_proveedor as Id, rfc, nombre, domicilio, telefono FROM proveedores WHERE "+ 
+                parameter +" LIKE ? ORDER BY nombre";
         
         try{
             PreparedStatement ps = connect.prepareStatement(sql);

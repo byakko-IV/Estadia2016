@@ -6,6 +6,7 @@
 package com.cede.lib;
 
 import com.cede.guis.*;
+import javax.swing.table.DefaultTableModel;
 /**
  *
  * @author MHERNANDEZ
@@ -15,6 +16,7 @@ public class GuiDisplayer {
     Proveedores p;
     Facturas f;
     Requisiciones r;
+    AgregarProducto ap;
     
     public void ChargeMain(){
         m = new Main();
@@ -34,6 +36,11 @@ public class GuiDisplayer {
     public void ChargeRequisiciones(){
         r = new Requisiciones();
         r.setVisible(true);
+    }
+    
+    public void ChargeAddProduct(DefaultTableModel tbm){
+        ap = new AgregarProducto(tbm);
+        ap.setVisible(true);
     }
     
 }
