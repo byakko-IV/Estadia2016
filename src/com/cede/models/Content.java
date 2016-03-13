@@ -7,6 +7,10 @@ public class Content {
     private int cantidad;
     private float importe;
     
+    public Content(){
+        
+    }
+    
     public Content(int idContent, int requisition, int product, int cantidad, int importe){
         this.idContent = idContent;
         this.requisition = requisition;

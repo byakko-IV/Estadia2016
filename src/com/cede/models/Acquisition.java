@@ -7,6 +7,10 @@ public class Acquisition {
     private int cantidad;
     private float importe;
     
+    public Acquisition(){
+        
+    }
+    
     public Acquisition(int idAcquisition, int factura, int producto, int cantidad, float importe){
         this.idAcquisition = idAcquisition;
         this.factura = factura;

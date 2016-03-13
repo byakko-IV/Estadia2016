@@ -46,7 +46,7 @@ public class AgregarProducto extends javax.swing.JFrame {
         CantidadField = new javax.swing.JTextField();
         jLabel1 = new javax.swing.JLabel();
         cancelarbtn = new javax.swing.JButton();
-        agragarbtn = new javax.swing.JButton();
+        agregarbtn = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -82,10 +82,10 @@ public class AgregarProducto extends javax.swing.JFrame {
             }
         });
 
-        agragarbtn.setText("Agragar");
-        agragarbtn.addActionListener(new java.awt.event.ActionListener() {
+        agregarbtn.setText("Agregar");
+        agregarbtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                agragarbtnActionPerformed(evt);
+                agregarbtnActionPerformed(evt);
             }
         });
 
@@ -109,7 +109,7 @@ public class AgregarProducto extends javax.swing.JFrame {
                         .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(CantidadField)
-                            .addComponent(agragarbtn, javax.swing.GroupLayout.DEFAULT_SIZE, 100, Short.MAX_VALUE))))
+                            .addComponent(agregarbtn, javax.swing.GroupLayout.DEFAULT_SIZE, 100, Short.MAX_VALUE))))
                 .addContainerGap(13, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -128,7 +128,7 @@ public class AgregarProducto extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(cancelarbtn)
-                    .addComponent(agragarbtn))
+                    .addComponent(agregarbtn))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -152,7 +152,7 @@ public class AgregarProducto extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_cancelarbtnActionPerformed
 
-    private void agragarbtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_agragarbtnActionPerformed
+    private void agregarbtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_agregarbtnActionPerformed
         /* Here is the code to perform when the Agragar button is clicked */
         tbm.addRow(new Object[]{findProductTable.getValueAt(findProductTable.getSelectedRow(), 0),
                             findProductTable.getValueAt(findProductTable.getSelectedRow(), 1),
@@ -170,12 +170,12 @@ public class AgregarProducto extends javax.swing.JFrame {
         }
         Facturas.totalFacturaField.setText(""+total);
         this.dispose();
-    }//GEN-LAST:event_agragarbtnActionPerformed
+    }//GEN-LAST:event_agregarbtnActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextField CantidadField;
-    private javax.swing.JButton agragarbtn;
+    private javax.swing.JButton agregarbtn;
     private javax.swing.JButton cancelarbtn;
     private javax.swing.JTable findProductTable;
     private javax.swing.JLabel jLabel1;
