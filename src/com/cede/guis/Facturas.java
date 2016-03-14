@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.cede.guis;
 
 import com.cede.lib.AcquisitionModel;
@@ -25,12 +20,11 @@ import javax.swing.table.DefaultTableModel;
  * @author MHERNANDEZ
  */
 public class Facturas extends javax.swing.JFrame {
-    private ImageIcon icon;
-    private GuiDisplayer g;
-    private ProviderModel pvm;
-    private DefaultTableModel tbm;
+    private final ImageIcon icon;
+    private final GuiDisplayer g;
+    private final ProviderModel pvm;
+    private final DefaultTableModel tbm;
     AcquisitionModel am;
-    GuiDisplayer gd;
     BillModel bm;
     
     /**
@@ -43,7 +37,6 @@ public class Facturas extends javax.swing.JFrame {
         setIconImage(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("/com/cede/img/icono.png")));
         g = new GuiDisplayer();
         pvm = new ProviderModel();
-        gd = new GuiDisplayer();
         bm = new BillModel();
         am = new AcquisitionModel();
         
@@ -85,9 +78,7 @@ public class Facturas extends javax.swing.JFrame {
         totalFacturaField.setText("");
         prdoctsTable.removeAll();
         
-        for(int i = 0; i < prdoctsTable.getRowCount(); i++){
-            tbm.removeRow(i);
-        }
+        tbm.setNumRows(0);
     }
 
     @SuppressWarnings("unchecked")
@@ -421,6 +412,11 @@ public class Facturas extends javax.swing.JFrame {
         jButton12.setText("Detalle");
 
         jButton13.setText("Eliminar");
+        jButton13.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton13ActionPerformed(evt);
+            }
+        });
 
         jLabel8.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel8.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -538,14 +534,14 @@ public class Facturas extends javax.swing.JFrame {
 
     private void AgragarbtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AgragarbtnActionPerformed
         /*Here is the code to perform when the agregar button is clicked*/
-        gd.ChargeAddProduct((DefaultTableModel)prdoctsTable.getModel());
+        g.ChargeAddProduct((DefaultTableModel)prdoctsTable.getModel(), "facturas");
     }//GEN-LAST:event_AgragarbtnActionPerformed
 
     private void quitarButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_quitarButtonActionPerformed
-        /* Here is the code to perform when the quitar bbutton is cliecked*/
+        /* Here is the code to perform when the quitar button is cliecked*/
         //modelo.removeRow(modelo.getRowCount()-1);
         float diferencia = Float.parseFloat(prdoctsTable.getValueAt(prdoctsTable.getSelectedRow(), 5).toString());
-        float total = Float.parseFloat(totalFacturaField.getText().toString());
+        float total = Float.parseFloat(totalFacturaField.getText());
         totalFacturaField.setText(""+(total - diferencia));
         tbm.removeRow(prdoctsTable.getSelectedRow());
         
@@ -557,13 +553,13 @@ public class Facturas extends javax.swing.JFrame {
         ArrayList<Acquisition> adquisicion = new ArrayList<Acquisition>();
         
         try{
-            Bill bill = new Bill(folioField.getText(), fechaField.getDate().toString(), Float.parseFloat(totalFacturaField.getText()),
+            Bill bill = new Bill(Integer.parseInt(folioField.getText()), fechaField.getDate().toString(), Float.parseFloat(totalFacturaField.getText()),
                    proveedor.getIdProvider());
             bm.storeBill(bill);
             
             for(int i = 0; i < prdoctsTable.getRowCount(); i++){
                 int idAcquisition = am.getAcquisitionId() + 1;
-                System.out.println(prdoctsTable.getValueAt(i, 3));
+                //System.out.println(prdoctsTable.getValueAt(i, 3));
                 Acquisition a = new Acquisition();
                 a.setIdAcquisition(idAcquisition);
                 a.setFactura(Integer.parseInt(folioField.getText()));
@@ -579,6 +575,9 @@ public class Facturas extends javax.swing.JFrame {
                 Acquisition acquisition = itrAdquisicion.next();
                 am.updateStock(acquisition);
             }
+            cleanFields();
+            disableFields();
+            bm.BillsTotal((DefaultTableModel)facturasTable.getModel());
         }catch(Exception ex){
             JOptionPane.showMessageDialog(null,"Error:"+ex.getMessage()+"\nVerifique");
         }
@@ -594,6 +593,17 @@ public class Facturas extends javax.swing.JFrame {
         /* Here is the code to perform when the nueva button is clicked */
         enableFields();
     }//GEN-LAST:event_jButton7ActionPerformed
+
+    private void jButton13ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton13ActionPerformed
+        /* Here is the code to perform when the eliminar button is clicked */
+        Bill b = new Bill(Integer.parseInt(facturasTable.getValueAt(facturasTable.getSelectedRow(), 0).toString()), 
+                facturasTable.getValueAt(facturasTable.getSelectedRow(), 1).toString(),
+                Float.parseFloat(facturasTable.getValueAt(facturasTable.getSelectedRow(), 2).toString()),
+                Integer.parseInt(facturasTable.getValueAt(facturasTable.getSelectedRow(), 3).toString())); 
+        bm.billDelete(b);
+        am.acquisitionDelete(b);
+        bm.BillsTotal((DefaultTableModel)facturasTable.getModel());
+    }//GEN-LAST:event_jButton13ActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

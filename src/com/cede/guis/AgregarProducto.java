@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.cede.guis;
 
 import com.cede.lib.ProductModel;
@@ -17,14 +12,16 @@ import com.cede.guis.Facturas;
  * @author MHERNANDEZ
  */
 public class AgregarProducto extends javax.swing.JFrame {
-    private ImageIcon icon;
+    private final ImageIcon icon;
     ProductModel pm;
     DefaultTableModel tbm;
     private float total = 0;
+    private final String controller;
     
-    public AgregarProducto(DefaultTableModel tbm) {
+    public AgregarProducto(DefaultTableModel tbm, String controller) {
         initComponents();
         this.tbm = tbm;
+        this.controller = controller;
         this.setLocationRelativeTo(null);
         //Setting up the window logo
         icon = new ImageIcon(getClass().getResource("/com/cede/img/header-logo.png"));        
@@ -48,7 +45,7 @@ public class AgregarProducto extends javax.swing.JFrame {
         cancelarbtn = new javax.swing.JButton();
         agregarbtn = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         findProductTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -70,6 +67,12 @@ public class AgregarProducto extends javax.swing.JFrame {
         searchbtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 searchbtnActionPerformed(evt);
+            }
+        });
+
+        CantidadField.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                CantidadFieldKeyPressed(evt);
             }
         });
 
@@ -168,9 +171,38 @@ public class AgregarProducto extends javax.swing.JFrame {
         for(int i = 0; i < filas; i++ ){
             total += Float.parseFloat(tbm.getValueAt(i,5).toString());
         }
-        Facturas.totalFacturaField.setText(""+total);
+        if(this.controller.equals("facturas")){
+            Facturas.totalFacturaField.setText(""+total);
+        }else{
+            Requisiciones.totalRequisicionField.setText(""+total);
+        }
         this.dispose();
     }//GEN-LAST:event_agregarbtnActionPerformed
+
+    private void CantidadFieldKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_CantidadFieldKeyPressed
+        if(evt.getKeyCode() == KeyEvent.VK_ENTER) {
+            tbm.addRow(new Object[]{findProductTable.getValueAt(findProductTable.getSelectedRow(), 0),
+                            findProductTable.getValueAt(findProductTable.getSelectedRow(), 1),
+                            findProductTable.getValueAt(findProductTable.getSelectedRow(), 2),
+                            /*findProductTable.getValueAt(findProductTable.getSelectedRow(), 3)*/
+                            Integer.parseInt(CantidadField.getText()),
+                            findProductTable.getValueAt(findProductTable.getSelectedRow(), 4),
+                            (Integer.parseInt(CantidadField.getText()) * 
+                            Float.parseFloat(findProductTable.getValueAt(findProductTable.getSelectedRow(), 4).toString()))
+            });
+
+            int filas = tbm.getRowCount();
+            for(int i = 0; i < filas; i++ ){
+                total += Float.parseFloat(tbm.getValueAt(i,5).toString());
+            }
+            if(this.controller.equals("facturas")){
+                Facturas.totalFacturaField.setText(""+total);
+            }else{
+                Requisiciones.totalRequisicionField.setText(""+total);
+            }
+            this.dispose();
+        }
+    }//GEN-LAST:event_CantidadFieldKeyPressed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

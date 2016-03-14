@@ -182,4 +182,30 @@ public class ProviderModel extends MyConnection{
             ex.printStackTrace();
         }
     }
+    
+    //Retrive a single record from the proveedores table
+    public Provider providerDetail(int id){
+        Provider p = new Provider();
+        connect();
+        ResultSet result = null;
+        String sql = "SELECT * FROM proveedores WHERE id_proveedor = ?";
+        
+        try{
+            PreparedStatement ps = connect.prepareStatement(sql);
+            ps.setInt(1, id);
+            result = ps.executeQuery();
+            if(result != null){
+                p.setIdProvider(result.getInt("id_proveedor"));
+                p.setRfc(result.getString("rfc"));
+                p.setNombre(result.getString("nombre"));
+                p.setDomicilio(result.getString("domicilio"));
+                p.setTelefono(result.getString("telefono"));
+            }
+            connect.close();
+            return p;
+        }catch(SQLException ex){
+            ex.printStackTrace();
+        } 
+        return p;
+    }
 }

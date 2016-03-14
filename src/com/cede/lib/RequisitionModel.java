@@ -1,24 +1,48 @@
 package com.cede.lib;
 
-import com.cede.models.Bill;
+import com.cede.models.Requisition;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import javax.swing.table.DefaultTableModel;
 
-public class BillModel extends MyConnection{
+public class RequisitionModel extends MyConnection {
     
-    //Storing a new product into the data base
-    public int storeBill(Bill bill){
+    //Retriving the max value from id_requisicion on requisiciones table 
+    public int getRequisitionId(){
+        connect();
+        int id = 0;
+        String sql = "SELECT MAX(id_requisicion) FROM requisiciones";
+        ResultSet result = null;
+        
+        try{
+            PreparedStatement ps = connect.prepareStatement(sql);
+            result = ps.executeQuery();
+            //result = getQuery(sql);
+            if(result != null){
+                while(result.next()){
+                    id = result.getInt(1);
+                }
+            }
+            connect.close();
+        }catch(SQLException ex){
+            ex.printStackTrace();
+        }
+        return id;  
+    }
+    
+    //Storing a new requisition into the data base
+    public int storeRequisition(Requisition req){
         int rowsAffected = 0;
         connect();
-        String sql = "INSERT INTO facturas VALUES(?,?,?,?)";
+        String sql = "INSERT INTO requisiciones VALUES(?,?,?,?,?)";
         try{
             PreparedStatement ps =  connect.prepareStatement(sql);
-            ps.setInt(1, bill.getFolio());
-            ps.setString(2, bill.getFecha());
-            ps.setFloat(3, bill.getTotalVenta());
-            ps.setInt(4, bill.getProviderId());
+            ps.setInt(1, req.getId());
+            ps.setString(2, req.getZonaEscolar());
+            ps.setInt(3, req.getRegion());
+            ps.setString(4, req.getFecha());
+            ps.setFloat(5, req.getTotal());
             
             rowsAffected = ps.executeUpdate();
             connect.close();
@@ -30,13 +54,13 @@ public class BillModel extends MyConnection{
     }
     
     //Retrieving all products from the data base
-    public void BillsTotal(DefaultTableModel tableModel){
+    public void RequisitionTotal(DefaultTableModel tableModel){
         connect();
         ResultSet result = null;
         tableModel.setRowCount(0);
         tableModel.setColumnCount(0);
-        String sql = "SELECT folio, fecha, total_venta as total, proveedor as id_proveedor"
-                + " FROM facturas ORDER BY fecha";
+        String sql = "SELECT id_requisicion as Id, zona_escolar, region, fecha, total"
+                + " FROM requisiciones ORDER BY fecha";
         
         try{
             PreparedStatement ps = connect.prepareStatement(sql);
@@ -61,14 +85,14 @@ public class BillModel extends MyConnection{
     }
     
     //Deleting a existing bill from data base
-    public int billDelete(Bill bill){
+    public int requisitionDelete(Requisition requisition){
         int rowsAffected = 0;
         connect();
-        String sql = "DELETE FROM facturas WHERE folio = ?";
+        String sql = "DELETE FROM requisiciones WHERE id_requisicion = ?";
         
         try{
             PreparedStatement ps = connect.prepareStatement(sql);
-             ps.setInt(1, bill.getFolio());
+             ps.setInt(1, requisition.getId());
              rowsAffected = ps.executeUpdate();
              connect.close();
         }catch(SQLException ex){

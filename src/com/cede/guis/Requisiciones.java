@@ -5,9 +5,17 @@
  */
 package com.cede.guis;
 
+import com.cede.lib.ContentModel;
 import java.awt.Toolkit;
 import javax.swing.ImageIcon;
 import com.cede.lib.GuiDisplayer;
+import com.cede.lib.RequisitionModel;
+import com.cede.models.Content;
+import com.cede.models.Requisition;
+import java.util.ArrayList;
+import java.util.Iterator;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -16,6 +24,9 @@ import com.cede.lib.GuiDisplayer;
 public class Requisiciones extends javax.swing.JFrame {
     private ImageIcon icon;
     private GuiDisplayer g;
+    private RequisitionModel rm;
+    private final DefaultTableModel tbm;
+    private ContentModel cm;
     /**
      * Creates new form Main
      */
@@ -25,6 +36,41 @@ public class Requisiciones extends javax.swing.JFrame {
         logoLabel.setIcon(icon);
         setIconImage(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("/com/cede/img/icono.png")));
         g = new GuiDisplayer();
+        rm = new RequisitionModel();
+        cm = new ContentModel();
+        
+        String headers[] = {"id", "descripcion", "presentacion", "cantidad", "precio", "subtotal" };
+        tbm= new DefaultTableModel(headers, 0);
+        productsTable.setModel(tbm);
+        rm.RequisitionTotal((DefaultTableModel)requisicionesTable.getModel());
+        disableFields();
+    }
+    
+    private void disableFields(){
+        fechaField.setEnabled(false);
+        zonaCombo.disable();
+        regionCombo.disable();
+        cancelButton.setEnabled(false);
+        guardarButton.setEnabled(false);
+        agregarButton.setEnabled(false);
+        quitarButton.setEnabled(false);
+    }
+    
+    private void enableFields(){
+        fechaField.setEnabled(true);
+        zonaCombo.enable();
+        regionCombo.enable();
+        cancelButton.setEnabled(true);
+        guardarButton.setEnabled(true);
+        agregarButton.setEnabled(true);
+        quitarButton.setEnabled(true);
+    }
+    
+    private void cleanFields(){
+        fechaField.cleanup();
+        totalRequisicionField.setText("");
+        
+        tbm.setNumRows(0);
     }
 
     /**
@@ -49,22 +95,23 @@ public class Requisiciones extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
-        jTextField6 = new javax.swing.JTextField();
-        jDateChooser1 = new com.toedter.calendar.JDateChooser();
-        jComboBox1 = new javax.swing.JComboBox();
-        jComboBox3 = new javax.swing.JComboBox();
+        totalRequisicionField = new javax.swing.JTextField();
+        fechaField = new com.toedter.calendar.JDateChooser();
+        zonaCombo = new javax.swing.JComboBox();
+        regionCombo = new javax.swing.JComboBox();
         logoLabel = new javax.swing.JLabel();
-        jButton5 = new javax.swing.JButton();
-        jButton6 = new javax.swing.JButton();
+        guardarButton = new javax.swing.JButton();
+        cancelButton = new javax.swing.JButton();
+        nuevaButton = new javax.swing.JButton();
         jPanel4 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
-        jButton8 = new javax.swing.JButton();
-        jButton9 = new javax.swing.JButton();
+        productsTable = new javax.swing.JTable();
+        agregarButton = new javax.swing.JButton();
+        quitarButton = new javax.swing.JButton();
         jLabel4 = new javax.swing.JLabel();
         jPanel8 = new javax.swing.JPanel();
         jScrollPane3 = new javax.swing.JScrollPane();
-        jTable3 = new javax.swing.JTable();
+        requisicionesTable = new javax.swing.JTable();
         jButton12 = new javax.swing.JButton();
         jButton13 = new javax.swing.JButton();
         jLabel8 = new javax.swing.JLabel();
@@ -153,9 +200,11 @@ public class Requisiciones extends javax.swing.JFrame {
 
         jLabel5.setText("Total");
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "SEC. GRALES 1", "ZONA 71", "JEF PRIM", "ZONA 17", "ZONA 18", "SEC. TEC", "ZONA 13", "EDUCACION FISICA", "ZONA 52", "SEC. GRALES 2", "ZONA 54", "JEF PREES 02", "ZONA 23", "ZONA 53", "ZONA 64", "ZONA 18", "JEF PREES", "ZONA 10", "JEF PRIM", "ZONA 21", "ZONA 20", "ZONA 114", "ZONA 103", "ZONA 2", "ZONA 42", "ZONA 9", "ZONA 19", "ZONA 102" }));
+        totalRequisicionField.setEditable(false);
 
-        jComboBox3.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "10" }));
+        zonaCombo.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "SEC. GRALES 1", "ZONA 71", "JEF PRIM", "ZONA 17", "ZONA 18", "SEC. TEC", "ZONA 13", "EDUCACION FISICA", "ZONA 52", "SEC. GRALES 2", "ZONA 54", "JEF PREES 02", "ZONA 23", "ZONA 53", "ZONA 64", "ZONA 18", "JEF PREES", "ZONA 10", "JEF PRIM", "ZONA 21", "ZONA 20", "ZONA 114", "ZONA 103", "ZONA 2", "ZONA 42", "ZONA 9", "ZONA 19", "ZONA 102" }));
+
+        regionCombo.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "10" }));
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -170,16 +219,16 @@ public class Requisiciones extends javax.swing.JFrame {
                             .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jTextField6)
-                            .addComponent(jComboBox3, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                            .addComponent(totalRequisicionField)
+                            .addComponent(regionCombo, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, 80, Short.MAX_VALUE))
+                            .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 80, Short.MAX_VALUE)
+                            .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jDateChooser1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jComboBox1, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                            .addComponent(fechaField, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(zonaCombo, 0, 1, Short.MAX_VALUE))))
                 .addContainerGap())
         );
         jPanel3Layout.setVerticalGroup(
@@ -188,27 +237,44 @@ public class Requisiciones extends javax.swing.JFrame {
                 .addGap(17, 17, 17)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel1)
-                    .addComponent(jDateChooser1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(fechaField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(8, 8, 8)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(zonaCombo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel2))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 13, Short.MAX_VALUE)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jComboBox3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(regionCombo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel3))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jTextField6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(totalRequisicionField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel5))
                 .addContainerGap())
         );
 
         logoLabel.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
-        jButton5.setText("Guardar");
+        guardarButton.setText("Guardar");
+        guardarButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                guardarButtonActionPerformed(evt);
+            }
+        });
 
-        jButton6.setText("Cancelar");
+        cancelButton.setText("Cancelar");
+        cancelButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cancelButtonActionPerformed(evt);
+            }
+        });
+
+        nuevaButton.setText("Nueva");
+        nuevaButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                nuevaButtonActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
         jPanel6.setLayout(jPanel6Layout);
@@ -217,14 +283,16 @@ public class Requisiciones extends javax.swing.JFrame {
             .addGroup(jPanel6Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(jPanel6Layout.createSequentialGroup()
+                        .addComponent(nuevaButton)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(cancelButton)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(guardarButton)
+                        .addGap(0, 0, Short.MAX_VALUE))
                     .addComponent(logoLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel6Layout.createSequentialGroup()
-                        .addGap(0, 15, Short.MAX_VALUE)
-                        .addComponent(jButton6, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(jButton5, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(97, 97, 97))
+                    .addComponent(jPanel3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
         );
         jPanel6Layout.setVerticalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -235,29 +303,37 @@ public class Requisiciones extends javax.swing.JFrame {
                 .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton5)
-                    .addComponent(jButton6))
+                    .addComponent(guardarButton)
+                    .addComponent(cancelButton)
+                    .addComponent(nuevaButton))
                 .addGap(8, 8, 8))
         );
 
         jPanel4.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        productsTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+
             }
         ));
-        jScrollPane1.setViewportView(jTable1);
+        jScrollPane1.setViewportView(productsTable);
 
-        jButton8.setText("Agragar");
+        agregarButton.setText("Agregar");
+        agregarButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                agregarButtonActionPerformed(evt);
+            }
+        });
 
-        jButton9.setText("Quitar");
+        quitarButton.setText("Quitar");
+        quitarButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                quitarButtonActionPerformed(evt);
+            }
+        });
 
         jLabel4.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -267,16 +343,16 @@ public class Requisiciones extends javax.swing.JFrame {
         jPanel4.setLayout(jPanel4Layout);
         jPanel4Layout.setHorizontalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 449, Short.MAX_VALUE)
             .addGroup(jPanel4Layout.createSequentialGroup()
-                .addComponent(jButton8, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(agregarButton, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(jButton9, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(quitarButton, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, Short.MAX_VALUE))
             .addGroup(jPanel4Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 553, Short.MAX_VALUE)
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -284,11 +360,11 @@ public class Requisiciones extends javax.swing.JFrame {
                 .addGap(5, 5, 5)
                 .addComponent(jLabel4)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 445, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton8)
-                    .addComponent(jButton9))
+                    .addComponent(agregarButton)
+                    .addComponent(quitarButton))
                 .addGap(40, 40, 40))
         );
 
@@ -299,7 +375,7 @@ public class Requisiciones extends javax.swing.JFrame {
             .addGroup(jPanel5Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGap(15, 15, 15)
                 .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel5Layout.setVerticalGroup(
@@ -308,29 +384,31 @@ public class Requisiciones extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(69, Short.MAX_VALUE))
-            .addComponent(jPanel4, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jPanel4, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 515, Short.MAX_VALUE)
         );
 
         jTabbedPane1.addTab("Nuevo", jPanel5);
 
         jPanel8.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
-        jTable3.setModel(new javax.swing.table.DefaultTableModel(
+        requisicionesTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+
             }
         ));
-        jScrollPane3.setViewportView(jTable3);
+        jScrollPane3.setViewportView(requisicionesTable);
 
         jButton12.setText("Detalle");
 
         jButton13.setText("Eliminar");
+        jButton13.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton13ActionPerformed(evt);
+            }
+        });
 
         jLabel8.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel8.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -346,7 +424,7 @@ public class Requisiciones extends javax.swing.JFrame {
         jPanel8.setLayout(jPanel8Layout);
         jPanel8Layout.setHorizontalGroup(
             jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 809, Short.MAX_VALUE)
+            .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 819, Short.MAX_VALUE)
             .addGroup(jPanel8Layout.createSequentialGroup()
                 .addComponent(jButton12, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
@@ -442,9 +520,83 @@ public class Requisiciones extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_jButton2ActionPerformed
 
+    private void guardarButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_guardarButtonActionPerformed
+        /* Here is the code ti perform when the guardar button is clicked */
+        int id = rm.getRequisitionId() + 1;
+        ArrayList<Content> content = new ArrayList();
+        try{
+            Requisition req = new Requisition(id, fechaField.getDate().toGMTString(), zonaCombo.getSelectedItem().toString(), 
+                Integer.parseInt(regionCombo.getSelectedItem().toString()), Float.parseFloat(totalRequisicionField.getText()));
+            rm.storeRequisition(req);
+            
+            for(int i = 0; i < productsTable.getRowCount(); i++){
+                int idContent = cm.getContentId() + 1;
+                Content c = new Content();
+                c.setIdContent(idContent);
+                c.setRequisition(id);
+                c.setProduct(Integer.parseInt(productsTable.getValueAt(i, 0).toString()));
+                c.setCantidad(Integer.parseInt(productsTable.getValueAt(i, 3).toString()));
+                c.setImporte(Float.parseFloat(productsTable.getValueAt(i, 5).toString()));
+                
+                cm.storeContent(c);
+                content.add(c);
+            }
+            Iterator<Content> itrContent = content.iterator();
+            while(itrContent.hasNext()){
+                Content co = itrContent.next();
+                cm.updateStock(co);
+            }
+            cleanFields();
+            disableFields();
+            rm.RequisitionTotal((DefaultTableModel)requisicionesTable.getModel());
+        }catch(Exception ex){
+            JOptionPane.showMessageDialog(null,"Error:"+ex.getMessage()+"\nVerifique");
+        }
+    }//GEN-LAST:event_guardarButtonActionPerformed
+
+    private void agregarButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_agregarButtonActionPerformed
+        /* Here is the code to perform when the agregar button is clicked */
+        g.ChargeAddProduct((DefaultTableModel)productsTable.getModel(), "requisiciones");
+    }//GEN-LAST:event_agregarButtonActionPerformed
+
+    private void quitarButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_quitarButtonActionPerformed
+        /* Here is the code to perform when the quitar button is clicked */
+        float diferencia = Float.parseFloat(productsTable.getValueAt(productsTable.getSelectedRow(), 5).toString());
+        float total = Float.parseFloat(totalRequisicionField.getText());
+        totalRequisicionField.setText(""+(total - diferencia));
+        tbm.removeRow(productsTable.getSelectedRow());
+    }//GEN-LAST:event_quitarButtonActionPerformed
+
+    private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelButtonActionPerformed
+        /* Here is the code to perform when the cancelar button is clicked */
+        cleanFields();
+        disableFields();
+    }//GEN-LAST:event_cancelButtonActionPerformed
+
+    private void nuevaButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nuevaButtonActionPerformed
+        /* Here is the code to perform when the nueva button is clicked */
+        enableFields();
+    }//GEN-LAST:event_nuevaButtonActionPerformed
+
+    private void jButton13ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton13ActionPerformed
+        /* here is the code to perform when the eliminar button is clicked */
+        Requisition r = new Requisition(Integer.parseInt(requisicionesTable.getValueAt(requisicionesTable.getSelectedRow(), 0).toString()), 
+                requisicionesTable.getValueAt(requisicionesTable.getSelectedRow(), 3).toString(),
+                requisicionesTable.getValueAt(requisicionesTable.getSelectedRow(), 1).toString(),
+                Integer.parseInt(requisicionesTable.getValueAt(requisicionesTable.getSelectedRow(), 2).toString()),
+                Float.parseFloat(requisicionesTable.getValueAt(requisicionesTable.getSelectedRow(), 4).toString())); 
+        rm.requisitionDelete(r);
+        cm.contentDelete(r);
+        rm.RequisitionTotal((DefaultTableModel)requisicionesTable.getModel());
+    }//GEN-LAST:event_jButton13ActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuItem MenuSalir;
+    private javax.swing.JButton agregarButton;
+    private javax.swing.JButton cancelButton;
+    private com.toedter.calendar.JDateChooser fechaField;
+    private javax.swing.JButton guardarButton;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton12;
     private javax.swing.JButton jButton13;
@@ -452,14 +604,7 @@ public class Requisiciones extends javax.swing.JFrame {
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
-    private javax.swing.JButton jButton5;
-    private javax.swing.JButton jButton6;
-    private javax.swing.JButton jButton8;
-    private javax.swing.JButton jButton9;
-    private javax.swing.JComboBox jComboBox1;
     private javax.swing.JComboBox jComboBox2;
-    private javax.swing.JComboBox jComboBox3;
-    private com.toedter.calendar.JDateChooser jDateChooser1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -479,10 +624,14 @@ public class Requisiciones extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JTabbedPane jTabbedPane1;
-    private javax.swing.JTable jTable1;
-    private javax.swing.JTable jTable3;
-    private javax.swing.JTextField jTextField6;
     private javax.swing.JToolBar jToolBar1;
     private javax.swing.JLabel logoLabel;
+    private javax.swing.JButton nuevaButton;
+    private javax.swing.JTable productsTable;
+    private javax.swing.JButton quitarButton;
+    private javax.swing.JComboBox regionCombo;
+    private javax.swing.JTable requisicionesTable;
+    public static javax.swing.JTextField totalRequisicionField;
+    private javax.swing.JComboBox zonaCombo;
     // End of variables declaration//GEN-END:variables
 }

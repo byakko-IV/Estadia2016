@@ -7,6 +7,10 @@ public class Provider {
     private String domicilio;
     private String telefono;
     
+    public Provider(){
+        
+    }
+    
     public Provider(int idBill, String rfc, String nombre, String domicilio, String telefono){
         this.idBill = idBill;
         this.rfc = rfc;

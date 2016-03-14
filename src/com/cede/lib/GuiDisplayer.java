@@ -17,6 +17,7 @@ public class GuiDisplayer {
     Facturas f;
     Requisiciones r;
     AgregarProducto ap;
+    ProductosDetalle pd;
     
     public void ChargeMain(){
         m = new Main();
@@ -38,9 +39,14 @@ public class GuiDisplayer {
         r.setVisible(true);
     }
     
-    public void ChargeAddProduct(DefaultTableModel tbm){
-        ap = new AgregarProducto(tbm);
+    public void ChargeAddProduct(DefaultTableModel tbm, String controller){
+        ap = new AgregarProducto(tbm, controller);
         ap.setVisible(true);
+    }
+    
+    public void ChargeProducctDitail(int id){
+        pd = new ProductosDetalle(id);
+        pd.setVisible(true);
     }
     
 }

@@ -337,6 +337,11 @@ public class Main extends javax.swing.JFrame {
         jScrollPane1.setViewportView(ProductsTable);
 
         jButton8.setText("Detalle");
+        jButton8.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton8ActionPerformed(evt);
+            }
+        });
 
         Editarbtn.setText("Editar");
         Editarbtn.addActionListener(new java.awt.event.ActionListener() {
@@ -570,6 +575,11 @@ public class Main extends javax.swing.JFrame {
             pm.ProductsSearch((DefaultTableModel)ProductsTable.getModel(), buscarField.getText());
          }
     }//GEN-LAST:event_buscarFieldKeyPressed
+
+    private void jButton8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton8ActionPerformed
+        /* Here is te code to perform when the detalle button is clicked */
+        g.ChargeProducctDitail(Integer.parseInt(ProductsTable.getValueAt(ProductsTable.getSelectedRow(), 0).toString()));
+    }//GEN-LAST:event_jButton8ActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton Cancelbtn;

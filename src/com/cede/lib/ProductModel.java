@@ -181,4 +181,31 @@ public class ProductModel extends MyConnection{
             ex.printStackTrace();
         } 
     }
+    
+    //Retrive a single record from the products table
+    public Product ProductDetail(int id){
+        Product p = new Product();
+        connect();
+        ResultSet result = null;
+        String sql = "SELECT * FROM productos WHERE id_producto = ?";
+        
+        try{
+            PreparedStatement ps = connect.prepareStatement(sql);
+            ps.setInt(1, id);
+            result = ps.executeQuery();
+            if(result != null){
+                p.setProductId(""+result.getInt("id_producto"));
+                p.setProductDescription(result.getString("descripcion"));
+                p.setProductPresentation(result.getString("presentacion"));
+                p.setProductCuantity(result.getInt("cantidad"));
+                p.setProductPrice(result.getFloat("precio"));
+                p.setProductProvider(result.getInt("proveedor"));
+            }
+            connect.close();
+            return p;
+        }catch(SQLException ex){
+            ex.printStackTrace();
+        } 
+        return p;
+    }
 }

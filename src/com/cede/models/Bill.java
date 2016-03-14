@@ -1,23 +1,23 @@
 package com.cede.models;
 
 public class Bill {
-    private String folio;
+    private int folio;
     private String fecha;
     private float totalVenta;
     private int providerId;
     
-    public Bill(String folio, String fecha, float totalVenta, int providerId){
+    public Bill(int folio, String fecha, float totalVenta, int providerId){
         this.folio = folio;
         this.fecha = fecha;
         this.totalVenta = totalVenta;
         this.providerId = providerId;
     }
 
-    public String getFolio() {
+    public int getFolio() {
         return folio;
     }
 
-    public void setFolio(String folio) {
+    public void setFolio(int folio) {
         this.folio = folio;
     }
 

@@ -6,6 +6,7 @@
 package com.cede.lib;
 
 import com.cede.models.Acquisition;
+import com.cede.models.Bill;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -75,6 +76,23 @@ public class AcquisitionModel extends MyConnection{
             rowsAffected = ps.executeUpdate();
             connect.close();
         }catch(SQLException  ex){
+            ex.printStackTrace();
+        }
+        return rowsAffected;
+    }
+    
+    //Deleting a existing bill's content from data base
+    public int acquisitionDelete(Bill bill){
+        int rowsAffected = 0;
+        connect();
+        String sql = "DELETE FROM adquisicion WHERE factura = ?";
+        
+        try{
+            PreparedStatement ps = connect.prepareStatement(sql);
+             ps.setInt(1, bill.getFolio());
+             rowsAffected = ps.executeUpdate();
+             connect.close();
+        }catch(SQLException ex){
             ex.printStackTrace();
         }
         return rowsAffected;
