@@ -302,6 +302,11 @@ public class Proveedores extends javax.swing.JFrame {
         jScrollPane1.setViewportView(tablaProviders);
 
         jButton8.setText("Detalle");
+        jButton8.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton8ActionPerformed(evt);
+            }
+        });
 
         Editarbtn.setText("Editar");
         Editarbtn.addActionListener(new java.awt.event.ActionListener() {
@@ -531,6 +536,11 @@ public class Proveedores extends javax.swing.JFrame {
                 searchProviderField.getText());
         }
     }//GEN-LAST:event_searchProviderFieldKeyPressed
+
+    private void jButton8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton8ActionPerformed
+        /* vHere is the code to perform when the detalle button is clicked */
+        g.ChargeProviderDetail(Integer.parseInt(tablaProviders.getValueAt(tablaProviders.getSelectedRow(), 0).toString()));
+    }//GEN-LAST:event_jButton8ActionPerformed
 
 
 

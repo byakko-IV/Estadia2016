@@ -208,4 +208,103 @@ public class ProductModel extends MyConnection{
         } 
         return p;
     }
+    
+    //Searching products from the data base
+    public void ProductsProvider(DefaultTableModel tableModel, int parameter){
+        connect();
+        ResultSet result = null;
+        tableModel.setRowCount(0);
+        tableModel.setColumnCount(0);
+        String sql = "SELECT id_producto as Id, descripcion, presentacion, cantidad, precio, subtotal, proveedor FROM "+
+                "productos WHERE proveedor = ? ORDER BY descripcion";
+        
+        try{
+            PreparedStatement ps = connect.prepareStatement(sql);
+            ps.setInt(1, parameter);
+            result = ps.executeQuery();
+            if(result != null){
+                int columnNumber = result.getMetaData().getColumnCount();
+                for(int i = 1; i < columnNumber; i++){
+                    tableModel.addColumn(result.getMetaData().getColumnName(i));
+                }
+                while(result.next()){
+                    Object []obj = new Object[columnNumber];
+                    for(int i = 1; i < columnNumber; i++){
+                        obj[i-1] = result.getObject(i);
+                    }
+                    tableModel.addRow(obj);
+                }
+            }
+            connect.close();
+        }catch(SQLException ex){
+            ex.printStackTrace();
+        } 
+    }
+    
+    //Searching products from the data base
+    public void ProductsAcquisition(DefaultTableModel tableModel, int parameter){
+        connect();
+        ResultSet result = null;
+        tableModel.setRowCount(0);
+        tableModel.setColumnCount(0);
+        String sql = "SELECT productos.descripcion, productos.presentacion, productos.precio, adquisicion.cantidad,"
+                + " adquisicion.importe  FROM productos JOIN adquisicion JOIN facturas ON productos.id_producto ="
+                + " adquisicion.producto AND adquisicion.factura = facturas.folio WHERE facturas.folio = ? ORDER BY descripcion";
+        
+        try{
+            PreparedStatement ps = connect.prepareStatement(sql);
+            ps.setInt(1, parameter);
+            result = ps.executeQuery();
+            if(result != null){
+                int columnNumber = result.getMetaData().getColumnCount();
+                for(int i = 1; i < columnNumber; i++){
+                    tableModel.addColumn(result.getMetaData().getColumnName(i));
+                }
+                while(result.next()){
+                    Object []obj = new Object[columnNumber];
+                    for(int i = 1; i < columnNumber; i++){
+                        obj[i-1] = result.getObject(i);
+                    }
+                    tableModel.addRow(obj);
+                }
+            }
+            connect.close();
+        }catch(SQLException ex){
+            ex.printStackTrace();
+        } 
+    }
+    
+    //Searching products from the data base
+    public void ProductsContent(DefaultTableModel tableModel, int parameter){
+        connect();
+        ResultSet result = null;
+        tableModel.setRowCount(0);
+        tableModel.setColumnCount(0);
+        String sql ="SELECT productos.descripcion, productos.presentacion, productos.precio, contenido.cantidad, "
+                + "contenido.importe FROM productos JOIN contenido JOIN requisiciones ON productos.id_producto = "
+                + "contenido.producto AND contenido.requisicion = requisiciones.id_requisicion "
+                + "WHERE requisiciones.id_requisicion = ? ORDER BY descripcion";
+        
+        try{
+            PreparedStatement ps = connect.prepareStatement(sql);
+            ps.setInt(1, parameter);
+            result = ps.executeQuery();
+            if(result != null){
+                int columnNumber = result.getMetaData().getColumnCount();
+                for(int i = 1; i <= columnNumber; i++){
+                    tableModel.addColumn(result.getMetaData().getColumnName(i));
+                }
+                while(result.next()){
+                    Object []obj = new Object[columnNumber];
+                    for(int i = 1; i <= columnNumber; i++){
+                        obj[i-1] = result.getObject(i);
+                    }
+                    tableModel.addRow(obj);
+                }
+            }
+            connect.close();
+        }catch(SQLException ex){
+            ex.printStackTrace();
+        } 
+    }
 }

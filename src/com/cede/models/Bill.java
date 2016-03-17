@@ -6,6 +6,10 @@ public class Bill {
     private float totalVenta;
     private int providerId;
     
+    public Bill(){
+        
+    }
+    
     public Bill(int folio, String fecha, float totalVenta, int providerId){
         this.folio = folio;
         this.fecha = fecha;

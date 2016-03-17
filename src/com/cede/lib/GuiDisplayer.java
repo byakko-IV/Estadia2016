@@ -1,16 +1,8 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.cede.lib;
 
 import com.cede.guis.*;
 import javax.swing.table.DefaultTableModel;
-/**
- *
- * @author MHERNANDEZ
- */
+
 public class GuiDisplayer {
     Main m;
     Proveedores p;
@@ -18,6 +10,9 @@ public class GuiDisplayer {
     Requisiciones r;
     AgregarProducto ap;
     ProductosDetalle pd;
+    ProveedoresDetalle prd;
+    FacturasDetalle fd;
+    RequisicionesDetalle rd;
     
     public void ChargeMain(){
         m = new Main();
@@ -49,4 +44,18 @@ public class GuiDisplayer {
         pd.setVisible(true);
     }
     
+    public void ChargeProviderDetail(int id){
+        prd = new ProveedoresDetalle(id);
+        prd.setVisible(true);
+    }
+    
+    public void ChargeBillsDetails(int id){
+        fd = new FacturasDetalle(id);
+        fd.setVisible(true);
+    }
+    
+    public void ChageRequisitionsDetails(int id){
+        rd = new RequisicionesDetalle(id);
+        rd.setVisible(true);
+    }
 }

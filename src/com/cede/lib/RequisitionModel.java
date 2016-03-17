@@ -35,14 +35,18 @@ public class RequisitionModel extends MyConnection {
     public int storeRequisition(Requisition req){
         int rowsAffected = 0;
         connect();
-        String sql = "INSERT INTO requisiciones VALUES(?,?,?,?,?)";
+        String sql = "INSERT INTO requisiciones VALUES(?,?,?,?,?,?,?,?,?)";
         try{
             PreparedStatement ps =  connect.prepareStatement(sql);
             ps.setInt(1, req.getId());
-            ps.setString(2, req.getZonaEscolar());
-            ps.setInt(3, req.getRegion());
+            ps.setString(2, req.getBeneficiado());
+            ps.setString(3, req.getConcepto());
             ps.setString(4, req.getFecha());
-            ps.setFloat(5, req.getTotal());
+            ps.setString(5, req.getZonaEscolar());
+            ps.setInt(6, req.getRegion());
+            ps.setDouble(7, req.getSubtotal());
+            ps.setDouble(8, req.getIva());
+            ps.setDouble(9, req.getTotal());
             
             rowsAffected = ps.executeUpdate();
             connect.close();
@@ -59,7 +63,7 @@ public class RequisitionModel extends MyConnection {
         ResultSet result = null;
         tableModel.setRowCount(0);
         tableModel.setColumnCount(0);
-        String sql = "SELECT id_requisicion as Id, zona_escolar, region, fecha, total"
+        String sql = "SELECT id_requisicion as Id,beneficiado, concepto, fecha, zona_escolar, region, subtotal, iva, total"
                 + " FROM requisiciones ORDER BY fecha";
         
         try{
@@ -99,5 +103,35 @@ public class RequisitionModel extends MyConnection {
             ex.printStackTrace();
         }
         return rowsAffected;
+    }
+    
+     //Retrive a single record from the products table
+    public Requisition RequisitionDetail(int id){
+        Requisition r = new Requisition();
+        connect();
+        ResultSet result = null;
+        String sql = "SELECT * FROM requisiciones WHERE id_requisicion = ?";
+        
+        try{
+            PreparedStatement ps = connect.prepareStatement(sql);
+            ps.setInt(1, id);
+            result = ps.executeQuery();
+            if(result != null){
+                r.setId(result.getInt("id_requisicion"));
+                r.setBeneficiado(result.getString("beneficiado"));
+                r.setConcepto(result.getString("concepto"));
+                r.setFecha(result.getString("fecha"));
+                r.setRegion(result.getInt("region"));
+                r.setZonaEscolar(result.getString("zona_escolar"));
+                r.setSubtotal(result.getDouble("subtotal"));
+                r.setIva(result.getDouble("iva"));
+                r.setTotal(result.getDouble("total"));
+            }
+            connect.close();
+            return r;
+        }catch(SQLException ex){
+            ex.printStackTrace();
+        } 
+        return r;
     }
 }

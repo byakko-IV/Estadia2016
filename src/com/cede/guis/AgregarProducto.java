@@ -5,7 +5,6 @@ import java.awt.Toolkit;
 import java.awt.event.KeyEvent;
 import javax.swing.ImageIcon;
 import javax.swing.table.DefaultTableModel;
-import com.cede.guis.Facturas;
 
 /**
  *
@@ -15,7 +14,7 @@ public class AgregarProducto extends javax.swing.JFrame {
     private final ImageIcon icon;
     ProductModel pm;
     DefaultTableModel tbm;
-    private float total = 0;
+    private double total = 0;
     private final String controller;
     
     public AgregarProducto(DefaultTableModel tbm, String controller) {
@@ -25,7 +24,6 @@ public class AgregarProducto extends javax.swing.JFrame {
         this.setLocationRelativeTo(null);
         //Setting up the window logo
         icon = new ImageIcon(getClass().getResource("/com/cede/img/header-logo.png"));        
-        //logoLabel.setIcon(icon);
          setIconImage(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("/com/cede/img/icono.png")));
         
         pm = new ProductModel();
@@ -164,17 +162,22 @@ public class AgregarProducto extends javax.swing.JFrame {
                             Integer.parseInt(CantidadField.getText()),
                             findProductTable.getValueAt(findProductTable.getSelectedRow(), 4),
                             (Integer.parseInt(CantidadField.getText()) * 
-                            Float.parseFloat(findProductTable.getValueAt(findProductTable.getSelectedRow(), 4).toString()))
+                            Double.parseDouble(findProductTable.getValueAt(findProductTable.getSelectedRow(), 4).toString()))
         });
         
         int filas = tbm.getRowCount();
         for(int i = 0; i < filas; i++ ){
-            total += Float.parseFloat(tbm.getValueAt(i,5).toString());
+            total += Double.parseDouble(tbm.getValueAt(i,5).toString());
         }
         if(this.controller.equals("facturas")){
             Facturas.totalFacturaField.setText(""+total);
         }else{
-            Requisiciones.totalRequisicionField.setText(""+total);
+            double iva = total * 0.16;
+            double t = total + iva;
+            double st = total;
+            Requisiciones.subtotalField.setText(""+st);
+            Requisiciones.ivaField.setText(""+iva);
+            Requisiciones.totalRequisicionField.setText(""+t);
         }
         this.dispose();
     }//GEN-LAST:event_agregarbtnActionPerformed
@@ -198,7 +201,12 @@ public class AgregarProducto extends javax.swing.JFrame {
             if(this.controller.equals("facturas")){
                 Facturas.totalFacturaField.setText(""+total);
             }else{
-                Requisiciones.totalRequisicionField.setText(""+total);
+                double iva = total * 0.16;
+                double t = total + iva;
+                double st = total;
+                Requisiciones.subtotalField.setText(""+st);
+                Requisiciones.ivaField.setText(""+iva);
+                Requisiciones.totalRequisicionField.setText(""+t);
             }
             this.dispose();
         }

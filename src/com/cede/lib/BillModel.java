@@ -76,4 +76,29 @@ public class BillModel extends MyConnection{
         }
         return rowsAffected;
     }
+    
+    //Retrive a single record from the products table
+    public Bill BillDetail(int id){
+        Bill bill = new Bill();
+        connect();
+        ResultSet result = null;
+        String sql = "SELECT * FROM facturas WHERE folio = ?";
+        
+        try{
+            PreparedStatement ps = connect.prepareStatement(sql);
+            ps.setInt(1, id);
+            result = ps.executeQuery();
+            if(result != null){
+                bill.setFolio(result.getInt("folio"));
+                bill.setFecha(result.getString("fecha"));
+                bill.setTotalVenta(result.getFloat("total_venta"));
+                bill.setProviderId(result.getInt("proveedor"));
+            }
+            connect.close();
+            return bill;
+        }catch(SQLException ex){
+            ex.printStackTrace();
+        } 
+        return bill;
+    }
 }

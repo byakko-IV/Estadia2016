@@ -66,12 +66,13 @@ public class AcquisitionModel extends MyConnection{
     public int updateStock(Acquisition a){
         int rowsAffected = 0;
         connect();
-        String sql = "UPDATE productos SET cantidad = cantidad + ? WHERE id_producto = ?";
+        String sql = "UPDATE productos SET cantidad = cantidad + ?, subtotal = (cantidad + ?) * precio WHERE id_producto = ?";
         
         try{
             PreparedStatement ps = connect.prepareStatement(sql);
             ps.setInt(1, a.getCantidad());
-            ps.setInt(2, a.getProducto());
+            ps.setInt(2, a.getCantidad());
+            ps.setInt(3, a.getProducto());
             
             rowsAffected = ps.executeUpdate();
             connect.close();

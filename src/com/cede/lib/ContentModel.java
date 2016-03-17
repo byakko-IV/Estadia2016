@@ -66,12 +66,13 @@ public class ContentModel extends MyConnection{
     public int updateStock(Content content){
         int rowsAffected = 0;
         connect();
-        String sql = "UPDATE productos SET cantidad = cantidad - ? WHERE id_producto = ?";
+        String sql = "UPDATE productos SET cantidad = cantidad - ?, subtotal = (cantidad - ?) * precio WHERE id_producto = ?";
         
         try{
             PreparedStatement ps = connect.prepareStatement(sql);
             ps.setInt(1, content.getCantidad());
-            ps.setInt(2, content.getProduct());
+            ps.setInt(2, content.getCantidad());
+            ps.setInt(3, content.getProduct());
             
             rowsAffected = ps.executeUpdate();
             connect.close();

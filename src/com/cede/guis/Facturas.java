@@ -410,6 +410,11 @@ public class Facturas extends javax.swing.JFrame {
         jScrollPane3.setViewportView(facturasTable);
 
         jButton12.setText("Detalle");
+        jButton12.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton12ActionPerformed(evt);
+            }
+        });
 
         jButton13.setText("Eliminar");
         jButton13.addActionListener(new java.awt.event.ActionListener() {
@@ -604,6 +609,11 @@ public class Facturas extends javax.swing.JFrame {
         am.acquisitionDelete(b);
         bm.BillsTotal((DefaultTableModel)facturasTable.getModel());
     }//GEN-LAST:event_jButton13ActionPerformed
+
+    private void jButton12ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton12ActionPerformed
+        /* Here is the code to perform when the detalle button is clicked */
+        g.ChargeBillsDetails(Integer.parseInt(facturasTable.getValueAt(facturasTable.getSelectedRow(), 0).toString()));
+    }//GEN-LAST:event_jButton12ActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

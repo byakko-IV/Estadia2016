@@ -2,12 +2,21 @@ package com.cede.models;
 
 public class Requisition {
     private int id;
+    private String beneficiado;
+    private String concepto;
     private String fecha;
     private String zonaEscolar;
     private int region;
-    private float total;
+    private double subtotal;
+    private double iva;
+    private double total;
     
-    public Requisition(int id, String fecha, String zonaEscolar, int region, float total){
+    public Requisition(){
+        
+    }
+    
+    public Requisition(int id, String beneficiado, String concepto, String fecha, String zonaEscolar, int region, 
+            double subtotal, double iva, double total){
         this.id = id;
         this.fecha = fecha;
         this.zonaEscolar = zonaEscolar;
@@ -18,6 +27,26 @@ public class Requisition {
     public int getId() {
         return id;
     }
+    
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getBeneficiado() {
+        return beneficiado;
+    }
+
+    public void setBeneficiado(String beneficiado) {
+        this.beneficiado = beneficiado;
+    }
+
+    public String getConcepto() {
+        return concepto;
+    }
+
+    public void setConcepto(String concepto) {
+        this.concepto = concepto;
+    }
 
     public String getFecha() {
         return fecha;
@@ -25,10 +54,6 @@ public class Requisition {
 
     public void setFecha(String fecha) {
         this.fecha = fecha;
-    }
-
-    public void setId(int id) {
-        this.id = id;
     }
 
     public String getZonaEscolar() {
@@ -46,12 +71,28 @@ public class Requisition {
     public void setRegion(int region) {
         this.region = region;
     }
+
+    public double getSubtotal() {
+        return subtotal;
+    }
+
+    public void setSubtotal(double subtotal) {
+        this.subtotal = subtotal;
+    }
+
+    public double getIva() {
+        return iva;
+    }
+
+    public void setIva(double iva) {
+        this.iva = iva;
+    }
     
-    public float getTotal() {
+    public double getTotal() {
         return total;
     }
 
-    public void setTotal(float total) {
+    public void setTotal(double total) {
         this.total = total;
     }
 }
