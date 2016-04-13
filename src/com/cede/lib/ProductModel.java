@@ -131,7 +131,7 @@ public class ProductModel extends MyConnection{
     public float getProductTotalMoney(){
         connect();
         float total = 0;
-        String sql = "SELECT SUM(subtotal) FROM productos";
+        String sql = "SELECT SUM(subtotal) + (SUM(subtotal) * (SELECT iva FROM configuraciones)) FROM productos";
         ResultSet result = null;
         
         try{
@@ -257,12 +257,12 @@ public class ProductModel extends MyConnection{
             result = ps.executeQuery();
             if(result != null){
                 int columnNumber = result.getMetaData().getColumnCount();
-                for(int i = 1; i < columnNumber; i++){
+                for(int i = 1; i <= columnNumber; i++){
                     tableModel.addColumn(result.getMetaData().getColumnName(i));
                 }
                 while(result.next()){
                     Object []obj = new Object[columnNumber];
-                    for(int i = 1; i < columnNumber; i++){
+                    for(int i = 1; i <= columnNumber; i++){
                         obj[i-1] = result.getObject(i);
                     }
                     tableModel.addRow(obj);
@@ -306,5 +306,47 @@ public class ProductModel extends MyConnection{
         }catch(SQLException ex){
             ex.printStackTrace();
         } 
+    }
+    
+     //Retrive the month balance
+    public float totalEntrada(String fecha){
+        float total = 0;
+        connect();
+        ResultSet result = null;
+        String sql = "select sum(facturas.total_venta) as entradas from facturas where fecha LIKE ?";
+        try{
+            PreparedStatement ps = connect.prepareStatement(sql);
+            ps.setString(1, fecha);
+            result = ps.executeQuery();
+            if(result != null){
+                total = result.getFloat("entradas");   
+            }
+            connect.close();
+            return total;
+        }catch(SQLException ex){
+            ex.printStackTrace();
+        } 
+        return total;
+    }
+    
+     //Retrive the month balance
+    public float totalSalida(String fecha){
+        float total = 0;
+        connect();
+        ResultSet result = null;
+        String sql = "select sum(requisiciones.total) as salidas from requisiciones where fecha LIKE ?";
+        try{
+            PreparedStatement ps = connect.prepareStatement(sql);
+            ps.setString(1, fecha);
+            result = ps.executeQuery();
+            if(result != null){
+                total = result.getFloat("salidas");   
+            }
+            connect.close();
+            return total;
+        }catch(SQLException ex){
+            ex.printStackTrace();
+        } 
+        return total;
     }
 }

@@ -170,7 +170,12 @@ public class AgregarProducto extends javax.swing.JFrame {
             total += Double.parseDouble(tbm.getValueAt(i,5).toString());
         }
         if(this.controller.equals("facturas")){
-            Facturas.totalFacturaField.setText(""+total);
+            double iva = total * 0.16;
+            double t = total + iva;
+            double st = total;
+            Facturas.subtotalField.setText(""+st);
+            Facturas.ivaField.setText(""+iva);
+            Facturas.totalFacturaField.setText(""+t);
         }else{
             double iva = total * 0.16;
             double t = total + iva;
@@ -199,7 +204,12 @@ public class AgregarProducto extends javax.swing.JFrame {
                 total += Float.parseFloat(tbm.getValueAt(i,5).toString());
             }
             if(this.controller.equals("facturas")){
-                Facturas.totalFacturaField.setText(""+total);
+                double iva = total * 0.16;
+                double t = total + iva;
+                double st = total;
+                Facturas.subtotalField.setText(""+st);
+                Facturas.ivaField.setText(""+iva);
+                Facturas.totalFacturaField.setText(""+t);
             }else{
                 double iva = total * 0.16;
                 double t = total + iva;

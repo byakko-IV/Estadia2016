@@ -4,9 +4,14 @@ package com.cede.guis;
 import com.cede.lib.ProductModel;
 import com.cede.lib.RequisitionModel;
 import com.cede.models.Requisition;
+import com.cede.reports.Reporte;
 import java.awt.Toolkit;
+import java.sql.SQLException;
+import java.util.HashMap;
+import java.util.Map;
 import javax.swing.ImageIcon;
 import javax.swing.table.DefaultTableModel;
+import net.sf.jasperreports.engine.JRException;
 
 
 public class RequisicionesDetalle extends javax.swing.JFrame {
@@ -26,12 +31,12 @@ public class RequisicionesDetalle extends javax.swing.JFrame {
         
         rm = new RequisitionModel();
         pm = new ProductModel();
+        r = rm.RequisitionDetail(this.id);
         
         fillFields();
     }
     
     private void fillFields(){
-        r = rm.RequisitionDetail(id);
         
         salidaField.setText(""+r.getId());
         fechaField.setText(r.getFecha());
@@ -75,6 +80,7 @@ public class RequisicionesDetalle extends javax.swing.JFrame {
         ivaField = new javax.swing.JTextField();
         jLabel12 = new javax.swing.JLabel();
         subtotalField = new javax.swing.JTextField();
+        jButton2 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -139,6 +145,13 @@ public class RequisicionesDetalle extends javax.swing.JFrame {
 
         subtotalField.setEditable(false);
 
+        jButton2.setText("Imprimir");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -151,6 +164,8 @@ public class RequisicionesDetalle extends javax.swing.JFrame {
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 592, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(jButton2)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jButton1))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(18, 18, 18)
@@ -249,7 +264,9 @@ public class RequisicionesDetalle extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 351, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton1)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jButton1)
+                    .addComponent(jButton2))
                 .addContainerGap(12, Short.MAX_VALUE))
         );
 
@@ -261,6 +278,31 @@ public class RequisicionesDetalle extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_jButton1ActionPerformed
 
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        /* Here is the code to perform when the imprimir button is clicked */
+        Map RequisicionMap = new HashMap();
+        RequisicionMap.put("salida", ""+r.getId());
+        RequisicionMap.put("fecha", r.getFecha());
+        RequisicionMap.put("subtotal", ""+r.getSubtotal());
+        RequisicionMap.put("iva", ""+r.getIva());
+        RequisicionMap.put("total", ""+r.getTotal());
+        RequisicionMap.put("beneficiado", r.getBeneficiado());
+        RequisicionMap.put("region", ""+r.getRegion());
+        RequisicionMap.put("zona", ""+r.getZonaEscolar());
+        RequisicionMap.put("concepto", r.getConcepto());
+        
+        Reporte r = new Reporte();
+        try{
+            r.ReporteRequisicion(RequisicionMap);
+        }catch(JRException ex){
+            ex.printStackTrace();
+        }catch(SQLException ex){
+            ex.printStackTrace();
+        } catch (ClassNotFoundException ex) {
+            ex.printStackTrace();
+        }
+    }//GEN-LAST:event_jButton2ActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextField conceptoField;
@@ -268,6 +310,7 @@ public class RequisicionesDetalle extends javax.swing.JFrame {
     private javax.swing.JTextField importeField;
     private javax.swing.JTextField ivaField;
     private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;

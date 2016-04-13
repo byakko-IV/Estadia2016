@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report name" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="1e926cf9-ace4-46ff-9aff-f43a54264320">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="fecha_ini" class="java.lang.String"/>
+	<parameter name="fecha_fin" class="java.lang.String"/>
+	<parameter name="entrada" class="java.lang.String"/>
+	<parameter name="salida" class="java.lang.String"/>
+	<parameter name="existencia" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[SELECT * FROM productos]]>
+	</queryString>
+	<field name="id_producto" class="java.lang.Object"/>
+	<field name="descripcion" class="java.lang.Object"/>
+	<field name="presentacion" class="java.lang.Object"/>
+	<field name="cantidad" class="java.lang.Object"/>
+	<field name="precio" class="java.lang.Object"/>
+	<field name="subtotal" class="java.lang.Object"/>
+	<field name="proveedor" class="java.lang.Object"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="74" splitType="Stretch">
+			<image>
+				<reportElement x="10" y="10" width="84" height="52" uuid="939947cc-2474-4b00-a20c-1b180f3643a5"/>
+				<imageExpression><![CDATA["C:\\Users\\MHERNANDEZ\\Documents\\NetBeansProjects\\cedeGuadalupe\\src\\com\\cede\\img\\header-logo.png"]]></imageExpression>
+			</image>
+			<staticText>
+				<reportElement x="94" y="10" width="461" height="35" uuid="0c023af5-0141-44c6-9a97-a80de441d4a0"/>
+				<textElement textAlignment="Center">
+					<font size="20"/>
+				</textElement>
+				<text><![CDATA[Concentrado general de entradas y salidas]]></text>
+			</staticText>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="150" splitType="Stretch">
+			<textField>
+				<reportElement x="339" y="0" width="72" height="20" uuid="4d7acfd0-9288-4972-901e-bb2bddda927b"/>
+				<textFieldExpression><![CDATA[$P{fecha_ini}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="455" y="0" width="100" height="20" uuid="08ba24b1-0544-4175-b4a4-ee4668668391"/>
+				<textFieldExpression><![CDATA[$P{fecha_fin}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="279" y="59" width="100" height="20" uuid="a9bdfa5d-d648-4c9c-8cee-724fc119ff66"/>
+				<textFieldExpression><![CDATA[$P{entrada}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="279" y="91" width="100" height="20" uuid="45f44fa3-cd8f-45fa-a204-69887f095ad3"/>
+				<textFieldExpression><![CDATA[$P{salida}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="279" y="125" width="100" height="20" uuid="0b0ce50d-ca80-4579-85fb-4b96c014f6f3"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{existencia}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="262" y="0" width="61" height="20" uuid="8129fb10-0f74-4b04-b9cf-787cce278326"/>
+				<text><![CDATA[Reporte del]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="427" y="0" width="17" height="20" uuid="e6351d24-1654-4d27-9b27-01052e697acf"/>
+				<text><![CDATA[al]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="179" y="59" width="100" height="20" uuid="486c38a5-ebd0-4c3b-b0b2-2c3aeb53a503"/>
+				<text><![CDATA[Monto de entrada]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="179" y="91" width="100" height="20" uuid="80d1f6f1-5082-4b82-8a6e-b721f91d7042"/>
+				<text><![CDATA[Monto de salida]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="179" y="125" width="100" height="20" uuid="aa0ff3b2-48db-4a90-821b-add709bffd39"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Monto de existencia]]></text>
+			</staticText>
+		</band>
+	</pageHeader>
+	<pageFooter>
+		<band height="54" splitType="Stretch">
+			<staticText>
+				<reportElement x="444" y="34" width="100" height="20" uuid="15069f5a-7180-488f-bb5c-18d41b3f3190"/>
+				<text><![CDATA[CeDE Guadalupe]]></text>
+			</staticText>
+		</band>
+	</pageFooter>
+</jasperReport>

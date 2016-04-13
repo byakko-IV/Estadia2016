@@ -9,6 +9,7 @@ import com.cede.lib.ProviderModel;
 import com.cede.models.Acquisition;
 import com.cede.models.Bill;
 import com.cede.models.Provider;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Iterator;
 import javax.swing.DefaultComboBoxModel;
@@ -77,7 +78,8 @@ public class Facturas extends javax.swing.JFrame {
         fechaField.cleanup();
         totalFacturaField.setText("");
         prdoctsTable.removeAll();
-        
+        subtotalField.setText("");
+        ivaField.setText("");
         tbm.setNumRows(0);
     }
 
@@ -102,6 +104,10 @@ public class Facturas extends javax.swing.JFrame {
         totalFacturaField = new javax.swing.JTextField();
         proveedorCombo = new javax.swing.JComboBox();
         fechaField = new com.toedter.calendar.JDateChooser();
+        jLabel6 = new javax.swing.JLabel();
+        subtotalField = new javax.swing.JTextField();
+        jLabel7 = new javax.swing.JLabel();
+        ivaField = new javax.swing.JTextField();
         logoLabel = new javax.swing.JLabel();
         guardarButton = new javax.swing.JButton();
         jButton7 = new javax.swing.JButton();
@@ -118,9 +124,6 @@ public class Facturas extends javax.swing.JFrame {
         jButton12 = new javax.swing.JButton();
         jButton13 = new javax.swing.JButton();
         jLabel8 = new javax.swing.JLabel();
-        jLabel9 = new javax.swing.JLabel();
-        jComboBox2 = new javax.swing.JComboBox();
-        jButton14 = new javax.swing.JButton();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         MenuSalir = new javax.swing.JMenuItem();
@@ -212,6 +215,14 @@ public class Facturas extends javax.swing.JFrame {
 
         proveedorCombo.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
+        jLabel6.setText("Subtotal ");
+
+        subtotalField.setEditable(false);
+
+        jLabel7.setText("Iva");
+
+        ivaField.setEditable(false);
+
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
@@ -220,21 +231,25 @@ public class Facturas extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(totalFacturaField)
-                            .addComponent(proveedorCombo, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                    .addGroup(jPanel3Layout.createSequentialGroup()
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                             .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, 80, Short.MAX_VALUE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(folioField)
-                            .addComponent(fechaField, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                            .addComponent(fechaField, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel6)
+                            .addComponent(jLabel7))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(totalFacturaField)
+                            .addComponent(proveedorCombo, 0, 117, Short.MAX_VALUE)
+                            .addComponent(subtotalField)
+                            .addComponent(ivaField))))
                 .addContainerGap())
         );
         jPanel3Layout.setVerticalGroup(
@@ -254,9 +269,17 @@ public class Facturas extends javax.swing.JFrame {
                     .addComponent(proveedorCombo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel6)
+                    .addComponent(subtotalField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel7)
+                    .addComponent(ivaField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel5)
                     .addComponent(totalFacturaField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(21, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         logoLabel.setBorder(javax.swing.BorderFactory.createEtchedBorder());
@@ -302,11 +325,11 @@ public class Facturas extends javax.swing.JFrame {
         jPanel6Layout.setVerticalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel6Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap()
                 .addComponent(logoLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 220, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(guardarButton)
                     .addComponent(jButton7)
@@ -385,11 +408,10 @@ public class Facturas extends javax.swing.JFrame {
         );
         jPanel5Layout.setVerticalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jPanel4, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 515, Short.MAX_VALUE)
             .addGroup(jPanel5Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(63, Short.MAX_VALUE))
-            .addComponent(jPanel4, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 515, Short.MAX_VALUE)
+                .addComponent(jPanel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("Nuevo", jPanel5);
@@ -427,12 +449,6 @@ public class Facturas extends javax.swing.JFrame {
         jLabel8.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel8.setText("Lista de facturas");
 
-        jLabel9.setText("Generar reporte por:");
-
-        jComboBox2.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-
-        jButton14.setText("Crear");
-
         javax.swing.GroupLayout jPanel8Layout = new javax.swing.GroupLayout(jPanel8);
         jPanel8.setLayout(jPanel8Layout);
         jPanel8Layout.setHorizontalGroup(
@@ -442,12 +458,7 @@ public class Facturas extends javax.swing.JFrame {
                 .addComponent(jButton12, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(jButton13, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jLabel9)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton14, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(0, 0, Short.MAX_VALUE))
             .addGroup(jPanel8Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabel8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -459,14 +470,11 @@ public class Facturas extends javax.swing.JFrame {
                 .addGap(5, 5, 5)
                 .addComponent(jLabel8)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 409, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton12)
-                    .addComponent(jButton13)
-                    .addComponent(jLabel9)
-                    .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton14))
+                    .addComponent(jButton13))
                 .addGap(40, 40, 40))
         );
 
@@ -546,8 +554,14 @@ public class Facturas extends javax.swing.JFrame {
         /* Here is the code to perform when the quitar button is cliecked*/
         //modelo.removeRow(modelo.getRowCount()-1);
         float diferencia = Float.parseFloat(prdoctsTable.getValueAt(prdoctsTable.getSelectedRow(), 5).toString());
-        float total = Float.parseFloat(totalFacturaField.getText());
-        totalFacturaField.setText(""+(total - diferencia));
+        float subtotal = Float.parseFloat(subtotalField.getText());
+        double nuevoSubtotal = subtotal - diferencia;
+        double st = nuevoSubtotal;
+        double iva = st * 0.16;
+        double total = st + iva;
+        subtotalField.setText(""+st);
+        ivaField.setText(""+iva);
+        totalFacturaField.setText(""+total);
         tbm.removeRow(prdoctsTable.getSelectedRow());
         
     }//GEN-LAST:event_quitarButtonActionPerformed
@@ -556,10 +570,12 @@ public class Facturas extends javax.swing.JFrame {
         /*Here is the code to perform when the guardar button is clicked*/
         Provider proveedor = (Provider) proveedorCombo.getSelectedItem();
         ArrayList<Acquisition> adquisicion = new ArrayList<Acquisition>();
+        SimpleDateFormat dt =  new SimpleDateFormat("dd-MM-yyy");
         
         try{
-            Bill bill = new Bill(Integer.parseInt(folioField.getText()), fechaField.getDate().toString(), Float.parseFloat(totalFacturaField.getText()),
-                   proveedor.getIdProvider());
+            Bill bill = new Bill(Integer.parseInt(folioField.getText()), dt.format(fechaField.getDate()), 
+                    Double.parseDouble(subtotalField.getText()), Double.parseDouble(ivaField.getText()), 
+                    Double.parseDouble(totalFacturaField.getText()), proveedor.getIdProvider());
             bm.storeBill(bill);
             
             for(int i = 0; i < prdoctsTable.getRowCount(); i++){
@@ -603,8 +619,10 @@ public class Facturas extends javax.swing.JFrame {
         /* Here is the code to perform when the eliminar button is clicked */
         Bill b = new Bill(Integer.parseInt(facturasTable.getValueAt(facturasTable.getSelectedRow(), 0).toString()), 
                 facturasTable.getValueAt(facturasTable.getSelectedRow(), 1).toString(),
-                Float.parseFloat(facturasTable.getValueAt(facturasTable.getSelectedRow(), 2).toString()),
-                Integer.parseInt(facturasTable.getValueAt(facturasTable.getSelectedRow(), 3).toString())); 
+                Double.parseDouble(facturasTable.getValueAt(facturasTable.getSelectedRow(), 2).toString()),
+                Double.parseDouble(facturasTable.getValueAt(facturasTable.getSelectedRow(), 3).toString()),
+                Double.parseDouble(facturasTable.getValueAt(facturasTable.getSelectedRow(), 4).toString()),
+                Integer.parseInt(facturasTable.getValueAt(facturasTable.getSelectedRow(), 5).toString())); 
         bm.billDelete(b);
         am.acquisitionDelete(b);
         bm.BillsTotal((DefaultTableModel)facturasTable.getModel());
@@ -624,22 +642,22 @@ public class Facturas extends javax.swing.JFrame {
     private com.toedter.calendar.JDateChooser fechaField;
     private javax.swing.JTextField folioField;
     private javax.swing.JButton guardarButton;
+    public static javax.swing.JTextField ivaField;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton12;
     private javax.swing.JButton jButton13;
-    private javax.swing.JButton jButton14;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton7;
-    private javax.swing.JComboBox jComboBox2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
-    private javax.swing.JLabel jLabel9;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenu jMenu4;
@@ -657,6 +675,7 @@ public class Facturas extends javax.swing.JFrame {
     private javax.swing.JTable prdoctsTable;
     private javax.swing.JComboBox proveedorCombo;
     private javax.swing.JButton quitarButton;
+    public static javax.swing.JTextField subtotalField;
     public static javax.swing.JTextField totalFacturaField;
     // End of variables declaration//GEN-END:variables
 }

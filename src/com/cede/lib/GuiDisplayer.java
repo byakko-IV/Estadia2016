@@ -13,6 +13,7 @@ public class GuiDisplayer {
     ProveedoresDetalle prd;
     FacturasDetalle fd;
     RequisicionesDetalle rd;
+    ReportDateSelector rds;
     
     public void ChargeMain(){
         m = new Main();
@@ -57,5 +58,10 @@ public class GuiDisplayer {
     public void ChageRequisitionsDetails(int id){
         rd = new RequisicionesDetalle(id);
         rd.setVisible(true);
+    }
+    
+    public void reportGenerate(){
+        rds = new ReportDateSelector();
+        rds.setVisible(true);
     }
 }

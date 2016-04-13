@@ -12,13 +12,15 @@ public class BillModel extends MyConnection{
     public int storeBill(Bill bill){
         int rowsAffected = 0;
         connect();
-        String sql = "INSERT INTO facturas VALUES(?,?,?,?)";
+        String sql = "INSERT INTO facturas VALUES(?,?,?,?,?,?)";
         try{
             PreparedStatement ps =  connect.prepareStatement(sql);
             ps.setInt(1, bill.getFolio());
             ps.setString(2, bill.getFecha());
-            ps.setFloat(3, bill.getTotalVenta());
-            ps.setInt(4, bill.getProviderId());
+            ps.setDouble(3, bill.getSubtotal());
+            ps.setDouble(4, bill.getIva());
+            ps.setDouble(5, bill.getTotalVenta());
+            ps.setInt(6, bill.getProviderId());
             
             rowsAffected = ps.executeUpdate();
             connect.close();
@@ -35,7 +37,7 @@ public class BillModel extends MyConnection{
         ResultSet result = null;
         tableModel.setRowCount(0);
         tableModel.setColumnCount(0);
-        String sql = "SELECT folio, fecha, total_venta as total, proveedor as id_proveedor"
+        String sql = "SELECT folio, fecha, subtotal, iva, total_venta as total, proveedor as id_proveedor"
                 + " FROM facturas ORDER BY fecha";
         
         try{
@@ -91,6 +93,8 @@ public class BillModel extends MyConnection{
             if(result != null){
                 bill.setFolio(result.getInt("folio"));
                 bill.setFecha(result.getString("fecha"));
+                bill.setSubtotal(result.getDouble("subtotal"));
+                bill.setIva(result.getDouble("iva"));
                 bill.setTotalVenta(result.getFloat("total_venta"));
                 bill.setProviderId(result.getInt("proveedor"));
             }

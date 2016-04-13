@@ -12,10 +12,15 @@ import com.cede.lib.ProductModel;
 import com.cede.lib.ProviderModel;
 import com.cede.models.Product;
 import com.cede.models.Provider;
+import com.cede.reports.Reporte;
 import java.awt.event.KeyEvent;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+import net.sf.jasperreports.engine.JRException;
 
 /**
  *
@@ -125,6 +130,7 @@ public class Main extends javax.swing.JFrame {
         jMenu1 = new javax.swing.JMenu();
         MenuSalir = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
+        jMenuItem1 = new javax.swing.JMenuItem();
         jMenu4 = new javax.swing.JMenu();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -442,6 +448,15 @@ public class Main extends javax.swing.JFrame {
         jMenuBar1.add(jMenu1);
 
         jMenu2.setText("Editar");
+
+        jMenuItem1.setText("Reporte");
+        jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem1ActionPerformed(evt);
+            }
+        });
+        jMenu2.add(jMenuItem1);
+
         jMenuBar1.add(jMenu2);
 
         jMenu4.setText("Ayuda");
@@ -581,6 +596,11 @@ public class Main extends javax.swing.JFrame {
         g.ChargeProducctDitail(Integer.parseInt(ProductsTable.getValueAt(ProductsTable.getSelectedRow(), 0).toString()));
     }//GEN-LAST:event_jButton8ActionPerformed
 
+    private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
+        // TODO add your handling code here:
+        g.reportGenerate();
+    }//GEN-LAST:event_jMenuItem1ActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton Cancelbtn;
     private javax.swing.JButton Editarbtn;
@@ -608,6 +628,7 @@ public class Main extends javax.swing.JFrame {
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenu jMenu4;
     private javax.swing.JMenuBar jMenuBar1;
+    private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;

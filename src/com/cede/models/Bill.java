@@ -3,16 +3,20 @@ package com.cede.models;
 public class Bill {
     private int folio;
     private String fecha;
-    private float totalVenta;
+    private double subtotal;
+    private double iva;
+    private double totalVenta;
     private int providerId;
     
     public Bill(){
         
     }
     
-    public Bill(int folio, String fecha, float totalVenta, int providerId){
+    public Bill(int folio, String fecha, double subtotal, double iva, double totalVenta, int providerId){
         this.folio = folio;
         this.fecha = fecha;
+        this.subtotal = subtotal;
+        this.iva = iva;
         this.totalVenta = totalVenta;
         this.providerId = providerId;
     }
@@ -33,11 +37,27 @@ public class Bill {
         this.fecha = fecha;
     }
 
-    public float getTotalVenta() {
+    public double getSubtotal() {
+        return subtotal;
+    }
+
+    public void setSubtotal(double subtotal) {
+        this.subtotal = subtotal;
+    }
+
+    public double getIva() {
+        return iva;
+    }
+
+    public void setIva(double iva) {
+        this.iva = iva;
+    }
+
+    public double getTotalVenta() {
         return totalVenta;
     }
 
-    public void setTotalVenta(float totalVenta) {
+    public void setTotalVenta(double totalVenta) {
         this.totalVenta = totalVenta;
     }
 
