@@ -27,7 +27,7 @@ public class ReportDateSelector extends javax.swing.JFrame {
     public ReportDateSelector() {
         initComponents();
         this.setLocationRelativeTo(null);
-        icon = new ImageIcon(getClass().getResource("/com/cede/img/header-logo.png"));        
+        icon = new ImageIcon(getClass().getResource("/com/cede/img/header-logo.png"));
         setIconImage(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("/com/cede/img/icono.png")));
         p = new ProductModel();
     }
